@@ -1,5 +1,7 @@
 
-package com.pittrack.pittrack.controller;
+package com.pittrack.pittrack.item;
+
+import java.security.Principal;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,9 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-
-import com.pittrack.pittrack.model.Item;
-import com.pittrack.pittrack.service.ItemService;
 
 import jakarta.validation.Valid;
 
@@ -26,11 +25,15 @@ public class ItemController {
     /** Displays all inventory items.
      * 
      * @param model The model to hold attributes for the view.
+     * @param principal The principal representing the currently authenticated user.
      * @return The view name for displaying all items.
      */
     @GetMapping("/items")
-    public String displayAllItems(Model model) {
-        model.addAttribute("items", itemService.getAllItems());
+    public String displayAllItems(Model model, Principal principal) {
+        String teamNumber = principal.getName();
+
+        model.addAttribute("teamNumber", teamNumber);
+        model.addAttribute("items", itemService.getAllItems(teamNumber));
         model.addAttribute("item", new Item());
         return "items";
     }
@@ -40,24 +43,29 @@ public class ItemController {
      * @param item The item to add.
      * @param result The binding result for validation.
      * @param model The model to hold attributes for the view.
+     * @param principal The principal representing the currently authenticated user.
      * @return The view name for displaying all items.
      */
     @PostMapping("/items")
     public String addItem(
             @Valid @ModelAttribute("item") Item item,
             BindingResult result,
-            Model model) {
+            Model model,
+            Principal principal) {
+
+        String teamNumber = principal.getName();
 
         if (result.hasErrors()) {
-            model.addAttribute("items", itemService.getAllItems());
+            model.addAttribute("items", itemService.getAllItems(teamNumber));
+            model.addAttribute("teamNumber", teamNumber);
             return "items";
         }
 
         try {
-            itemService.addItem(item);
+            itemService.addItem(item, teamNumber);
         } catch (IllegalArgumentException ex) {
             result.rejectValue("sku", "duplicate", ex.getMessage());
-            model.addAttribute("items", itemService.getAllItems());
+            model.addAttribute("items", itemService.getAllItems(teamNumber));
             return "items";
         }
 
@@ -68,14 +76,17 @@ public class ItemController {
      * 
      * @param id The ID of the item to update.
      * @param model The model to hold attributes for the view.
+     * @param principal The principal representing the currently authenticated user.
      * @return The view name for the update form.
      */
     @GetMapping("/items/{id}/update")
     public String showUpdateForm(
             @PathVariable Long id,
-            Model model) {
+            Model model,
+            Principal principal) {
 
-        Item item = itemService.getItemById(id);
+        String teamNumber = principal.getName();
+        Item item = itemService.getItemById(id, teamNumber);
 
         if (item == null) {
             return "redirect:/items";
@@ -93,6 +104,7 @@ public class ItemController {
      * @param updatedItem The updated item details.
      * @param result The binding result for validation.
      * @param model The model to hold attributes for the view.
+     * @param principal The principal representing the currently authenticated user.
      * @return The view name for displaying all items.
      */
     @PostMapping("/items/{id}/update")
@@ -100,21 +112,23 @@ public class ItemController {
             @PathVariable Long id,
             @Valid @ModelAttribute("item") Item updatedItem,
             BindingResult result,
-            Model model) {
+            Model model,
+            Principal principal) {
+        String teamNumber = principal.getName();
 
         if (result.hasErrors()) {
             model.addAttribute("itemId", id);
             return "updateItem";
         }
 
-        Item existingItem = itemService.getItemById(id);
+        Item existingItem = itemService.getItemById(id, teamNumber);
 
         if (existingItem == null) {
             return "redirect:/items";
         }
 
         try {
-            itemService.updateItem(id, updatedItem);
+            itemService.updateItem(id, updatedItem, teamNumber);
         } catch (IllegalArgumentException ex) {
             result.rejectValue("sku", "duplicate", ex.getMessage());
             model.addAttribute("itemId", id);
@@ -127,11 +141,13 @@ public class ItemController {
     /** Deletes an existing inventory item.
      * 
      * @param id The ID of the item to delete.
+     * @param principal The principal representing the currently authenticated user.
      * @return The view name for displaying all items.
      */
     @PostMapping("/items/{id}/delete")
-    public String deleteItem(@PathVariable Long id) {
-        itemService.deleteItem(id);
+    public String deleteItem(@PathVariable Long id, Principal principal) {
+        String teamNumber = principal.getName();
+        itemService.deleteItem(id, teamNumber);
         return "redirect:/items";
     }
 
@@ -139,14 +155,17 @@ public class ItemController {
      * 
      * @param id The ID of the item to display.
      * @param model The model to hold attributes for the view.
+     * @param principal The principal representing the currently authenticated user.
      * @return The view name for displaying item details.
      */
     @GetMapping("/items/{id}")
     public String displayItemDetails(
             @PathVariable Long id,
-            Model model) {
+            Model model,
+            Principal principal) {
 
-        Item item = itemService.getItemById(id);
+        String teamNumber = principal.getName();
+        Item item = itemService.getItemById(id, teamNumber);
 
         if (item == null) {
             return "redirect:/items";

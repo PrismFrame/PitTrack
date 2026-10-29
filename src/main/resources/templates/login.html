@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | PitTrack</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+</head>
+
+<body class="login-page">
+
+    <header>
+        <h1>PitTrack</h1>
+        <p>Charger Robotics 3786 Inventory Management</p>
+    </header>
+
+    <main>
+        <section class="login-card">
+
+            <h2>Welcome Back</h2>
+            <div class="heading-accent"></div>
+
+            <p class="login-description">
+                Sign in to your team's account.
+            </p>
+
+            <p th:if="${param.error}"
+               class="login-message login-error"
+               role="alert">
+                Invalid team number or password.
+            </p>
+
+            <p th:if="${param.logout}"
+               class="login-message login-success">
+                You have been logged out.
+            </p>
+
+            <p th:if="${registered}"
+               th:text="${registered}"
+               class="login-message login-success">
+            </p>
+
+            <form th:action="@{/login}" method="post">
+
+                <label for="teamNumber">Team Number</label>
+
+                <input
+                    id="teamNumber"
+                    name="username"
+                    type="text"
+                    inputmode="numeric"
+                    pattern="[0-9]{1,10}"
+                    maxlength="10"
+                    autocomplete="username"
+                    placeholder="Enter your team number"
+                    required>
+
+                <label for="password">Password</label>
+
+                <input
+                    id="password"
+                    name="password"
+                    type="password"
+                    autocomplete="current-password"
+                    placeholder="Enter your password"
+                    required>
+
+                <button type="submit">Log In</button>
+
+            </form>
+
+            <p class="login-register">
+                New to PitTrack?
+                <a th:href="@{/register}">
+                    Create a team account
+                </a>
+            </p>
+
+        </section>
+    </main>
+
+</body>
+</html>

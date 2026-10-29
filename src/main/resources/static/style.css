@@ -94,6 +94,29 @@ header {
         0 8px 32px rgb(0 0 0 / 30%);
 }
 
+/* Robotics Team Number */
+.team-number {
+    position: relative;
+    z-index: 1;
+
+    display: block;
+    width: fit-content;
+
+    margin: 0 auto 12px;
+    padding: 5px 16px;
+
+    background: var(--accent-soft);
+    color: var(--accent);
+
+    border: 1px solid var(--accent);
+    border-radius: 8px;
+
+    font-size: 0.95rem;
+    font-weight: 750;
+    letter-spacing: 0.5px;
+    text-align: center;
+}
+
 /* Subtle technical-grid effect */
 header::before {
     content: "";
@@ -695,5 +718,421 @@ a:hover {
         animation-duration: 0.01ms !important;
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
+    }
+}
+
+
+
+/* =========================================
+            PitTrack Login Page
+   ========================================= */
+.login-page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Center login card */
+.login-page main {
+    width: min(440px, calc(100% - 32px));
+    margin: auto;
+    padding: 42px 0;
+}
+
+/* Login card */
+.login-card {
+    padding: 32px;
+
+    background: var(--surface);
+
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+
+    box-shadow: var(--shadow);
+}
+
+/* Login heading */
+.login-card h2 {
+    margin: 0 0 8px;
+
+    color: #ffffff;
+
+    font-size: 1.5rem;
+    font-weight: 750;
+    letter-spacing: -0.4px;
+}
+
+.login-description {
+    margin: 0 0 20px;
+
+    color: var(--muted);
+    font-size: 0.95rem;
+}
+
+/* Gold heading accent */
+.login-card .heading-accent {
+    width: 46px;
+    height: 3px;
+    margin: 14px 0 20px;
+
+    background: var(--accent);
+    border-radius: 3px;
+}
+
+/* Login form */
+.login-card form label {
+    display: block;
+    margin: 17px 0 6px;
+
+    color: #dce6f5;
+    font-size: 0.9rem;
+    font-weight: 650;
+}
+
+.login-card input[type="text"],
+.login-card input[type="password"] {
+    width: 100%;
+    max-width: none;
+    min-height: 48px;
+}
+
+/* Login button */
+.login-card button {
+    width: 100%;
+    min-height: 47px;
+    margin-top: 26px;
+}
+
+/* Login notifications */
+.login-message {
+    margin: 0 0 16px;
+    padding: 12px 14px;
+
+    border-radius: var(--radius-small);
+
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.login-error {
+    background: var(--red-bg);
+    color: #fca5a5;
+    border: 1px solid #71313c;
+}
+
+.login-success {
+    background: var(--green-bg);
+    color: #86efac;
+    border: 1px solid #245a48;
+}
+
+.login-info {
+    background: var(--surface-raised);
+    color: var(--muted);
+    border: 1px solid var(--border);
+}
+
+/* Registration link */
+.login-register {
+    margin: 24px 0 0;
+
+    color: var(--muted);
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+.login-register a {
+    color: #93c5fd;
+    font-weight: 650;
+    text-decoration: none;
+}
+
+.login-register a:hover {
+    color: var(--accent);
+    text-decoration: underline;
+}
+
+/* Mobile login layout */
+@media (max-width: 480px) {
+    .login-page main {
+        width: calc(100% - 28px);
+        padding: 26px 0;
+    }
+
+    .login-card {
+        padding: 22px 18px;
+    }
+
+    .login-card h2 {
+        font-size: 1.3rem;
+    }
+}
+
+/* =========================================
+        PitTrack Registration Page
+   ========================================= */
+.register-page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Center registration card */
+.register-page main {
+    width: min(480px, calc(100% - 32px));
+    margin: auto;
+    padding: 42px 0;
+}
+
+/* Registration card */
+.register-card {
+    padding: 32px;
+
+    background: var(--surface);
+
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+
+    box-shadow: var(--shadow);
+}
+
+/* Registration heading */
+.register-card h2 {
+    margin: 0 0 8px;
+
+    color: #ffffff;
+
+    font-size: 1.5rem;
+    font-weight: 750;
+    letter-spacing: -0.4px;
+}
+
+.register-description {
+    margin: 0 0 20px;
+
+    color: var(--muted);
+    font-size: 0.95rem;
+}
+
+/* Gold heading accent */
+.register-card .heading-accent {
+    width: 46px;
+    height: 3px;
+    margin: 14px 0 20px;
+
+    background: var(--accent);
+    border-radius: 3px;
+}
+
+/* Registration form */
+.register-card form label {
+    display: block;
+    margin: 17px 0 6px;
+
+    color: #dce6f5;
+    font-size: 0.9rem;
+    font-weight: 650;
+}
+
+.register-card input[type="text"],
+.register-card input[type="password"] {
+    width: 100%;
+    max-width: none;
+    min-height: 48px;
+}
+
+/* Registration button - gold accent */
+.register-card button {
+    width: 100%;
+    min-height: 47px;
+    margin-top: 26px;
+
+    background: var(--accent);
+    color: #111827;
+}
+
+.register-card button:hover {
+    background: var(--accent-hover);
+
+    box-shadow:
+        0 4px 16px rgb(245 183 0 / 20%);
+}
+
+/* Registration error */
+.register-message {
+    margin: 0 0 16px;
+    padding: 12px 14px;
+
+    background: var(--red-bg);
+    color: #fca5a5;
+
+    border: 1px solid #71313c;
+    border-radius: var(--radius-small);
+
+    font-size: 0.9rem;
+    font-weight: 600;
+
+    overflow-wrap: anywhere;
+}
+
+/* Login link */
+.register-login {
+    margin: 24px 0 0;
+
+    color: var(--muted);
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+.register-login a {
+    color: #93c5fd;
+    font-weight: 650;
+    text-decoration: none;
+}
+
+.register-login a:hover {
+    color: var(--accent);
+    text-decoration: underline;
+}
+
+/* Mobile registration layout */
+@media (max-width: 480px) {
+    .register-page main {
+        width: calc(100% - 28px);
+        padding: 26px 0;
+    }
+
+    .register-card {
+        padding: 22px 18px;
+    }
+
+    .register-card h2 {
+        font-size: 1.3rem;
+    }
+}
+
+/* =========================================
+    Login and Registration Layout Fixes
+   ========================================= */
+/* Keep login and registration pages centered */
+body.login-page,
+body.register-page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Override general inventory main layout */
+body.login-page main,
+body.register-page main {
+    width: min(480px, calc(100% - 32px));
+    margin: auto;
+    padding: 42px 0;
+}
+
+/* Override general section spacing */
+body.login-page .login-card,
+body.register-page .register-card {
+    margin: 0;
+    padding: 32px;
+}
+
+/* Keep form inputs full width */
+body.login-page .login-card input,
+body.register-page .register-card input {
+    width: 100%;
+    max-width: none;
+}
+
+/* Mobile adjustments */
+@media (max-width: 699px) {
+    body.login-page main,
+    body.register-page main {
+        width: calc(100% - 28px);
+        margin: auto;
+        padding: 26px 0;
+    }
+
+    body.login-page .login-card,
+    body.register-page .register-card {
+        padding: 22px 18px;
+        margin: 0;
+    }
+}
+
+/* =========================================
+       PitTrack Account Controls
+   ========================================= */
+.account-controls {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    z-index: 2;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.account-controls form {
+    margin: 0;
+}
+
+.account-controls button {
+    min-height: 40px;
+    margin: 0;
+    padding: 9px 15px;
+
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+/* Logout button */
+.account-controls .logout-button {
+    background: transparent;
+    color: var(--accent);
+
+    border: 1px solid var(--accent);
+}
+
+.account-controls .logout-button:hover {
+    background: var(--accent);
+    color: #111827;
+}
+
+/* Delete account button */
+.account-controls .account-delete-button {
+    background: var(--red-bg);
+    color: #fca5a5;
+
+    border: 1px solid #71313c;
+}
+
+.account-controls .account-delete-button:hover {
+    background: #b91c1c;
+    color: #ffffff;
+
+    border-color: #ef4444;
+
+    box-shadow: 0 4px 14px rgb(248 113 113 / 20%);
+}
+
+/* Mobile account controls */
+@media (max-width: 480px) {
+    .account-controls {
+        position: relative;
+        top: auto;
+        right: auto;
+
+        justify-content: center;
+        flex-wrap: wrap;
+
+        margin: 16px auto 0;
+    }
+
+    .account-controls button {
+        min-height: 42px;
+        padding: 8px 12px;
+        font-size: 0.8rem;
     }
 }

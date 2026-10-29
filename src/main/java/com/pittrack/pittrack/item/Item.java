@@ -1,4 +1,4 @@
-package com.pittrack.pittrack.model;
+package com.pittrack.pittrack.item;
 
 import java.math.BigDecimal;
 
@@ -12,15 +12,31 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
+import com.pittrack.pittrack.account.TeamAccount;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 
-@Entity 
+@Entity
+@Table(
+    uniqueConstraints = {
+        @UniqueConstraint(
+            columnNames = {"team_account_id", "sku"}
+        )
+    }
+)
 public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotBlank(message = "SKU is required")
-    @Size(max = 50, message = "SKU must not exceed 50 characters")
-    @Column(nullable = false, unique = true, length = 50)
+    
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "team_account_id", nullable = false)
+    private TeamAccount teamAccount;
+
+    @Column(nullable = false, length = 50)
     private String sku;
 
     @NotBlank(message = "Name is required")
@@ -55,6 +71,14 @@ public class Item {
      */
     public Long getId() {
         return id;
+    }
+
+    public TeamAccount getTeamAccount() {
+        return teamAccount;
+    }
+
+    public void setTeamAccount(TeamAccount teamAccount) {
+        this.teamAccount = teamAccount;
     }
 
     /** Get the SKU of the item.
