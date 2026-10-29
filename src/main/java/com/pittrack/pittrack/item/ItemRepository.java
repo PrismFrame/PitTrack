@@ -1,8 +1,7 @@
 
-package com.pittrack.pittrack.repository;
+package com.pittrack.pittrack.item;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import com.pittrack.pittrack.model.Item;
 
 public interface ItemRepository extends JpaRepository<Item, Long> {
     boolean existsBySku(String sku);

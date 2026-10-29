@@ -1,4 +1,4 @@
-package main.java.com.pittrack.pittrack.account;
+package com.pittrack.pittrack.account;
 
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;

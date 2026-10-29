@@ -1,4 +1,4 @@
-package main.java.com.pittrack.pittrack.account;
+package com.pittrack.pittrack.account;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -6,11 +6,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class TeamAccountService {
-    private final TeamAccountRepository teamAccountRepository;
+    private final TeamAccountRepository repository;
     private final PasswordEncoder passwordEncoder;
 
     public TeamAccountService(TeamAccountRepository teamAccountRepository, PasswordEncoder passwordEncoder) {
-        this.teamAccountRepository = teamAccountRepository;
+        this.repository = teamAccountRepository;
         this.passwordEncoder = passwordEncoder;
     }
 

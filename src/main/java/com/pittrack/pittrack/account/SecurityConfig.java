@@ -1,4 +1,4 @@
-package main.java.com.pittrack.pittrack.account;
+package com.pittrack.pittrack.account;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -69,7 +69,7 @@ public class SecurityConfig {
             .formLogin(form -> form
                 .loginPage("/login")
                 .loginProcessingUrl("/login")
-                .defaultSuccessUrl("/login?success", true)
+                .defaultSuccessUrl("/items", true)
                 .failureUrl("/login?error")
                 .permitAll()
             )

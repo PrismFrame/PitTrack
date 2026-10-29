@@ -1,4 +1,4 @@
-package com.pittrack.pittrack.model;
+package com.pittrack.pittrack.item;
 
 import java.math.BigDecimal;
 

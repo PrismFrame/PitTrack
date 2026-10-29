@@ -1,13 +1,10 @@
 
-package com.pittrack.pittrack.service;
+package com.pittrack.pittrack.item;
 
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.pittrack.pittrack.model.Item;
-import com.pittrack.pittrack.repository.ItemRepository;
 
 @Service
 @Transactional(readOnly = true)

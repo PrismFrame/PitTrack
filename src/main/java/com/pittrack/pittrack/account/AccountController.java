@@ -1,4 +1,4 @@
-package main.java.com.pittrack.pittrack.account;
+package com.pittrack.pittrack.account;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
