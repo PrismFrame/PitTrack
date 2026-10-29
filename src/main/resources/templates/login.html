@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login | PitTrack</title>
+</head>
+<body>
+    <main>
+        <h1>PitTrack</h1>
+        <p>Sign in to your team's account.</p>
+
+        <p th:if="${param.error}" role="alert">
+            Invalid team number or password.
+        </p>
+        <p th:if="${param.logout}">
+            You have been logged out.
+        </p>
+        <p th:if="${registered}" th:text="${registered}"></p>
+
+        <form th:action="@{/login}" method="post">
+            <label for="teamNumber">Team Number</label>
+            <input id="teamNumber"
+                   name="username"
+                   type="text"
+                   inputmode="numeric"
+                   pattern="[0-9]{1,10}"
+                   maxlength="10"
+                   autocomplete="username"
+                   required>
+
+            <label for="password">Password</label>
+            <input id="password"
+                   name="password"
+                   type="password"
+                   autocomplete="current-password"
+                   required>
+
+            <button type="submit">Log In</button>
+        </form>
+
+        <p>New to PitTrack?
+            <a th:href="@{/register}">Create a team account</a>
+        </p>
+    </main>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Create Account | PitTrack</title>
+</head>
+<body>
+    <main>
+        <h1>Create a PitTrack Account</h1>
+        <p>Register your robotics team's account.</p>
+
+        <p th:if="${error}" th:text="${error}" role="alert"></p>
+
+        <form th:action="@{/register}" method="post">
+            <label for="teamNumber">Team Number</label>
+            <input id="teamNumber"
+                   name="teamNumber"
+                   type="text"
+                   inputmode="numeric"
+                   pattern="[0-9]{1,10}"
+                   maxlength="10"
+                   autocomplete="username"
+                   th:value="${teamNumber}"
+                   required>
+
+            <label for="password">Password</label>
+            <input id="password"
+                   name="password"
+                   type="password"
+                   minlength="12"
+                   autocomplete="new-password"
+                   required>
+
+            <button type="submit">Create Account</button>
+        </form>
+
+        <p>Already registered?
+            <a th:href="@{/login}">Log in</a>
+        </p>
+    </main>
+</body>
+</html>
