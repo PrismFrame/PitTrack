@@ -56,12 +56,27 @@
 
         <section>
             <h2>Inventory Items</h2>
+            <div class="inventory-controls">
+                <input
+                    type="text"
+                    id="inventorySearch"
+                    placeholder="Search by name, SKU, or location..."
+                    aria-label="Search inventory">
+
+                <select id="stockFilter" aria-label="Filter by stock status">
+                    <option value="all">All Items</option>
+                    <option value="in-stock">In Stock</option>
+                    <option value="low-stock">Low Stock</option>
+                    <option value="out-of-stock">Out of Stock</option>
+                </select>
+            </div>
+
             <p th:if="${#lists.isEmpty(items)}" style="color: gray;" class="empty-state">
                 No items in inventory yet.
             </p>
 
-            <ul th:unless="${#lists.isEmpty(items)}">
-                <li th:each="item : ${items}">
+            <ul class="inventory-list" th:unless="${#lists.isEmpty(items)}">
+                <li th:each="item : ${items}" th:attr="data-stock=${item.quantity == 0 ? 'out-of-stock' : (item.quantity < 5 ? 'low-stock' : 'in-stock')}">
                     <div class="item-details">
                         <strong th:text="${item.name}">Item Name</strong>
 
@@ -86,7 +101,7 @@
                                 $0.00
                             </span>
                         </span>
-                        
+
                         <span>
                             Location:
                             <span th:text="${item.location}">Item Location</span>
@@ -94,15 +109,15 @@
                     </div>
                     
                     <span th:if="${item.quantity == 0}" class="stock-out">
-                        (Out of Stock)
+                        Out of Stock
                     </span>
 
                     <span th:if="${item.quantity > 0 and item.quantity < 5}" class="stock-low">
-                        (Low Stock - Restock Alert)
+                        Low Stock - Restock Alert
                     </span>
 
                     <span th:if="${item.quantity >= 5}" class="stock-in">
-                        (In Stock)
+                        In Stock
                     </span>
 
                     <form th:action="@{/items/{id}/delete(id=${item.id})}"
@@ -116,7 +131,48 @@
                     </form>
                 </li>
             </ul>
+
+            <p id="noMatchingItems" class="empty-state" hidden>
+                No items match your search or selected stock filter.
+            </p>
         </section>
     </main>
+
+    <script>
+        const searchInput = document.getElementById('inventorySearch');
+        const stockFilter = document.getElementById('stockFilter');
+        const inventoryItems = document.querySelectorAll(
+            '.inventory-list li'
+        );
+        const noMatchingItems = document.getElementById('noMatchingItems');
+
+        function filterInventory() {
+            const searchTerm = searchInput.value.toLowerCase().trim();
+            const selectedStock = stockFilter.value;
+            let visibleCount = 0;
+
+            inventoryItems.forEach(item => {
+                const matchesSearch =
+                    item.textContent.toLowerCase().includes(searchTerm);
+
+                const matchesStock =
+                    selectedStock === 'all' ||
+                    item.dataset.stock === selectedStock;
+
+                const isVisible = matchesSearch && matchesStock;
+
+                item.style.display = isVisible ? 'flex' : 'none';
+
+                if (isVisible) {
+                    visibleCount++;
+                }
+            });
+
+            noMatchingItems.hidden = visibleCount > 0;
+        }
+
+        searchInput.addEventListener('input', filterInventory);
+        stockFilter.addEventListener('change', filterInventory);
+    </script>
 </body>
 </html>
