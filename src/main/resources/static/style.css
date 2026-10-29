@@ -94,6 +94,29 @@ header {
         0 8px 32px rgb(0 0 0 / 30%);
 }
 
+/* Robotics Team Number */
+.team-number {
+    position: relative;
+    z-index: 1;
+
+    display: block;
+    width: fit-content;
+
+    margin: 0 auto 12px;
+    padding: 5px 16px;
+
+    background: var(--accent-soft);
+    color: var(--accent);
+
+    border: 1px solid var(--accent);
+    border-radius: 8px;
+
+    font-size: 0.95rem;
+    font-weight: 750;
+    letter-spacing: 0.5px;
+    text-align: center;
+}
+
 /* Subtle technical-grid effect */
 header::before {
     content: "";
@@ -1038,45 +1061,78 @@ body.register-page .register-card input {
 }
 
 /* =========================================
-              PitTrack Logout Button
+       PitTrack Account Controls
    ========================================= */
-.logout-form {
+.account-controls {
     position: absolute;
     top: 24px;
     right: 24px;
+    z-index: 2;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.account-controls form {
     margin: 0;
 }
 
-.logout-button {
+.account-controls button {
     min-height: 40px;
     margin: 0;
-    padding: 9px 18px;
+    padding: 9px 15px;
 
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+/* Logout button */
+.account-controls .logout-button {
     background: transparent;
     color: var(--accent);
 
     border: 1px solid var(--accent);
-    border-radius: var(--radius-small);
-
-    font-size: 0.9rem;
-    font-weight: 700;
 }
 
-.logout-button:hover {
+.account-controls .logout-button:hover {
     background: var(--accent);
     color: #111827;
-
-    box-shadow: 0 4px 14px rgb(245 183 0 / 20%);
 }
 
+/* Delete account button */
+.account-controls .account-delete-button {
+    background: var(--red-bg);
+    color: #fca5a5;
+
+    border: 1px solid #71313c;
+}
+
+.account-controls .account-delete-button:hover {
+    background: #b91c1c;
+    color: #ffffff;
+
+    border-color: #ef4444;
+
+    box-shadow: 0 4px 14px rgb(248 113 113 / 20%);
+}
+
+/* Mobile account controls */
 @media (max-width: 480px) {
-    .logout-form {
-        top: 18px;
-        right: 14px;
+    .account-controls {
+        position: relative;
+        top: auto;
+        right: auto;
+
+        justify-content: center;
+        flex-wrap: wrap;
+
+        margin: 16px auto 0;
     }
 
-    .logout-button {
-        padding: 7px 11px;
+    .account-controls button {
+        min-height: 42px;
+        padding: 8px 12px;
         font-size: 0.8rem;
     }
 }

@@ -16,8 +16,17 @@ import com.pittrack.pittrack.account.TeamAccount;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 
-@Entity 
+@Entity
+@Table(
+    uniqueConstraints = {
+        @UniqueConstraint(
+            columnNames = {"team_account_id", "sku"}
+        )
+    }
+)
 public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,9 +36,7 @@ public class Item {
     @JoinColumn(name = "team_account_id", nullable = false)
     private TeamAccount teamAccount;
 
-    @NotBlank(message = "SKU is required")
-    @Size(max = 50, message = "SKU must not exceed 50 characters")
-    @Column(nullable = false, unique = true, length = 50)
+    @Column(nullable = false, length = 50)
     private String sku;
 
     @NotBlank(message = "Name is required")

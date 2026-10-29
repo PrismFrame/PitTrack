@@ -61,7 +61,7 @@ public class ItemService {
     public Item addItem(Item item, String teamNumber) {
         TeamAccount team = getTeam(teamNumber);
 
-        if (itemRepository.existsBySku(item.getSku())) {
+        if (itemRepository.existsBySkuAndTeamAccount_TeamNumber(item.getSku(), teamNumber)) {
         throw new IllegalArgumentException(
                 "SKU already exists: " + item.getSku());
         }
@@ -86,8 +86,8 @@ public class ItemService {
             return null;
         }
 
-        if (itemRepository.existsBySkuAndIdNot(
-                updatedItem.getSku(), id)) {
+        if (itemRepository.existsBySkuAndTeamAccount_TeamNumberAndIdNot(
+                updatedItem.getSku(), teamNumber, id)) {
             throw new IllegalArgumentException(
                 "SKU already exists: " + updatedItem.getSku());
         }

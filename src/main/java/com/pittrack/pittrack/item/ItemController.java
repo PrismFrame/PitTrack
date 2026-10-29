@@ -32,6 +32,7 @@ public class ItemController {
     public String displayAllItems(Model model, Principal principal) {
         String teamNumber = principal.getName();
 
+        model.addAttribute("teamNumber", teamNumber);
         model.addAttribute("items", itemService.getAllItems(teamNumber));
         model.addAttribute("item", new Item());
         return "items";
@@ -56,6 +57,7 @@ public class ItemController {
 
         if (result.hasErrors()) {
             model.addAttribute("items", itemService.getAllItems(teamNumber));
+            model.addAttribute("teamNumber", teamNumber);
             return "items";
         }
 

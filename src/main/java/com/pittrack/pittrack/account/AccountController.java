@@ -1,11 +1,16 @@
 package com.pittrack.pittrack.account;
 
+import java.security.Principal;
+
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
 public class AccountController {
@@ -61,5 +66,39 @@ public class AccountController {
             model.addAttribute("teamNumber", teamNumber);
             return "register";
         }
+    }
+
+    /**
+     * Deletes the currently authenticated team's account.
+     *
+     * @param principal the currently authenticated user
+     * @param request the HTTP request
+     * @param redirectAttributes the redirect attributes
+     * @return the redirect view
+     */
+    @PostMapping("/account/delete")
+    public String deleteAccount(
+            Principal principal,
+            HttpServletRequest request,
+            RedirectAttributes redirectAttributes) {
+
+        String teamNumber = principal.getName();
+
+        teamAccountService.deleteAccount(teamNumber);
+
+        // Clear the security context
+        SecurityContextHolder.clearContext();
+
+        // Invalidate the current session
+        if (request.getSession(false) != null) {
+            request.getSession(false).invalidate();
+        }
+
+        redirectAttributes.addFlashAttribute(
+            "success",
+            "Your team account has been deleted successfully."
+        );
+
+        return "redirect:/login";
     }
 }

@@ -8,12 +8,29 @@
 </head>
 <body>
     <header>
+        <span class="team-number"
+            th:text="'Team #' + ${teamNumber}">
+            Team #0000
+        </span>
         <h1>PitTrack Inventory</h1>
         <p>View and manage your inventory items.</p>
 
-        <form th:action="@{/logout}" method="post" class="logout-form">
-            <button type="submit" class="logout-button">Logout</button>
-        </form>
+        <div class="account-controls">
+            <form th:action="@{/logout}" method="post">
+                <button type="submit" class="logout-button">
+                    Logout
+                </button>
+            </form>
+
+            <form th:action="@{/account/delete}" method="post"
+                onsubmit="return confirm('WARNING: This will permanently delete your team account and ALL inventory. Are you absolutely sure?');">
+
+                <button type="submit" class="account-delete-button">
+                    Delete Account
+                </button>
+            </form>
+
+        </div>
     </header>
 
     <main>
