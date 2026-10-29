@@ -15,6 +15,15 @@ public class AccountController {
         this.teamAccountService = teamAccountService;
     }
 
+    /** Displays the home page.
+     * 
+     * @return the view name.
+     */
+    @GetMapping("/")
+    public String home() {
+        return "redirect:/login";
+    }
+
     /** Displays the login page.
      * 
      * @return the view name.

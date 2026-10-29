@@ -2,42 +2,76 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Account | PitTrack</title>
+    <link rel="stylesheet" th:href="@{/style.css}">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
 </head>
-<body>
+
+<body class="register-page">
+
+    <header>
+        <h1>PitTrack</h1>
+        <p>Charger Robotics 3786 Inventory Management</p>
+    </header>
+
     <main>
-        <h1>Create a PitTrack Account</h1>
-        <p>Register your robotics team's account.</p>
+        <section class="register-card">
 
-        <p th:if="${error}" th:text="${error}" role="alert"></p>
+            <h2>Create Team Account</h2>
+            <div class="heading-accent"></div>
 
-        <form th:action="@{/register}" method="post">
-            <label for="teamNumber">Team Number</label>
-            <input id="teamNumber"
-                   name="teamNumber"
-                   type="text"
-                   inputmode="numeric"
-                   pattern="[0-9]{1,10}"
-                   maxlength="10"
-                   autocomplete="username"
-                   th:value="${teamNumber}"
-                   required>
+            <p class="register-description">
+                Register your robotics team's account.
+            </p>
 
-            <label for="password">Password</label>
-            <input id="password"
-                   name="password"
-                   type="password"
-                   minlength="12"
-                   autocomplete="new-password"
-                   required>
+            <p th:if="${error}"
+               th:text="${error}"
+               class="register-message"
+               role="alert">
+            </p>
 
-            <button type="submit">Create Account</button>
-        </form>
+            <form th:action="@{/register}" method="post">
 
-        <p>Already registered?
-            <a th:href="@{/login}">Log in</a>
-        </p>
+                <label for="teamNumber">Team Number</label>
+
+                <input
+                    id="teamNumber"
+                    name="teamNumber"
+                    type="text"
+                    inputmode="numeric"
+                    pattern="[0-9]{1,10}"
+                    maxlength="10"
+                    autocomplete="username"
+                    placeholder="Enter your team number"
+                    th:value="${teamNumber}"
+                    required>
+
+                <label for="password">Password</label>
+
+                <input
+                    id="password"
+                    name="password"
+                    type="password"
+                    minlength="12"
+                    autocomplete="new-password"
+                    placeholder="Create a password (12+ characters)"
+                    required>
+
+                <button type="submit">
+                    Create Account
+                </button>
+
+            </form>
+
+            <p class="register-login">
+                Already registered?
+                <a th:href="@{/login}">Log in</a>
+            </p>
+
+        </section>
     </main>
+
 </body>
 </html>
