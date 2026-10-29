@@ -1,73 +1,118 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PitTrack Inventory</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
-    <h1>PitTrack Inventory</h1>
-    <p>View and manage your inventory items.</p>
+    <header>
+        <h1>PitTrack Inventory</h1>
+        <p>View and manage your inventory items.</p>
+    </header>
+
     <main>
         <section>
             <h2>Add New Item</h2>
-            <form th:action="@{/items}" method="post">
+            <form th:action="@{/items}" th:object="${item}" method="post">
+                <p th:if="${#fields.hasErrors()}" class="form-error">
+                    Please correct the errors below.
+                </p>
+
                 <label for="name">Name:</label>
-                <input type="text" id="name" name="name" required>
+                <input type="text" id="name" th:field="*{name}" required>
+                <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="field-error"></span>
                 <br>
+
                 <label for="description">Description:</label>
-                <input type="text" id="description" name="description" required>
+                <input type="text" id="description" th:field="*{description}" required>
+                <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="field-error"></span>
                 <br>
+
                 <label for="quantity">Quantity:</label>
-                <input type="number" id="quantity" name="quantity" required>
+                <input type="number" id="quantity" th:field="*{quantity}" min="0" required>
+                <span th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}" class="field-error"></span>
                 <br>
+
                 <label for="sku">SKU:</label>
-                <input type="text" id="sku" name="sku" required>
+                <input type="text" id="sku" th:field="*{sku}" required>
+                <span th:if="${#fields.hasErrors('sku')}" th:errors="*{sku}" class="field-error"></span>
                 <br>
+
                 <label for="price">Price:</label>
-                <input type="number" id="price" name="price" step="0.01" required>
+                <input type="number" id="price" th:field="*{price}" step="0.01" min="0" required>
+                <span th:if="${#fields.hasErrors('price')}" th:errors="*{price}" class="field-error"></span>
                 <br>
+
                 <label for="location">Location:</label>
-                <input type="text" id="location" name="location" required>
-                <button type="submit">Add Item</button>
+                <input type="text" id="location" th:field="*{location}" required>
+                <span th:if="${#fields.hasErrors('location')}" th:errors="*{location}" class="field-error"></span>
+                <br>
+
+                <button type="submit" class="update-button">Add Item</button>
             </form>
         </section>
+
         <section>
             <h2>Inventory Items</h2>
-            <ul>
+            <p th:if="${#lists.isEmpty(items)}" style="color: gray;" class="empty-state">
+                No items in inventory yet.
+            </p>
+
+            <ul th:unless="${#lists.isEmpty(items)}">
                 <li th:each="item : ${items}">
-                    <span th:text="${item.name}">Item Name</span> - 
-                    <span th:text="${item.description}">Item Description</span> - 
-                    <span th:text="${item.quantity}">Item Quantity</span>
-                    <span th:text="${item.sku}">Item SKU</span>
-                    <span th:text="${item.price}">Item Price</span>
-                    <span th:text="${item.location}">Item Location</span>
-                    <span th:if="${item.quantity == 0}"
-                        style="color: red;">
+                    <div class="item-details">
+                        <strong th:text="${item.name}">Item Name</strong>
+
+                        <span>
+                            Description:
+                            <span th:text="${item.description}">Item Description</span>
+                        </span>
+
+                        <span>
+                            Quantity:
+                            <span th:text="${item.quantity}">Item Quantity</span>
+                        </span>
+
+                        <span>
+                            SKU:
+                            <span th:text="${item.sku}">Item SKU</span>
+                        </span>
+
+                        <span>
+                            Price:
+                            <span th:text="${'$' +#numbers.formatDecimal(item.price, 1, 2)}">
+                                $0.00
+                            </span>
+                        </span>
+                        
+                        <span>
+                            Location:
+                            <span th:text="${item.location}">Item Location</span>
+                        </span>
+                    </div>
+                    
+                    <span th:if="${item.quantity == 0}" class="stock-out">
                         (Out of Stock)
                     </span>
 
-                    <span th:if="${item.quantity > 0 and item.quantity < 5}"
-                        style="color: orange;">
-                        (Low Stock)
+                    <span th:if="${item.quantity > 0 and item.quantity < 5}" class="stock-low">
+                        (Low Stock - Restock Alert)
                     </span>
 
-                    <span th:if="${item.quantity >= 5}"
-                        style="color: green;">
+                    <span th:if="${item.quantity >= 5}" class="stock-in">
                         (In Stock)
                     </span>
 
-                    <span th:if="${item.quantity > 0 and item.quantity < 5}"
-                        style="color: orange; font-weight: bold;">
-                        (Restock Alert)
-                    </span>
                     <form th:action="@{/items/{id}/delete(id=${item.id})}"
                         method="post"
                         style="display: inline;">
-                        <button type="submit">Delete</button>
+                        <button type="submit" class="delete-button">Delete</button>
                     </form>
+
                     <form th:action="@{/items/{id}/update(id=${item.id})}" method="get" style="display: inline;">
-                        <button type="submit">Update</button>
+                        <button type="submit" class="update-button">Update</button>
                     </form>
                 </li>
             </ul>

@@ -1,0 +1,278 @@
+:root {
+    --navy: #172554;
+    --blue: #2563eb;
+    --blue-hover: #1d4ed8;
+    --background: #f1f5f9;
+    --surface: #ffffff;
+    --text: #1e293b;
+    --muted: #64748b;
+    --border: #e2e8f0;
+    --red: #dc2626;
+    --orange: #c2410c;
+    --green: #15803d;
+    --radius: 12px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: var(--background);
+    color: var(--text);
+    font-family: Arial, Helvetica, sans-serif;
+    line-height: 1.6;
+}
+
+header {
+    background: var(--navy);
+    color: white;
+    padding: 24px;
+}
+
+header h1 {
+    max-width: 1100px;
+    margin: 0 auto;
+    font-size: 1.8rem;
+}
+
+header p {
+    max-width: 1100px;
+    margin: 4px auto 0;
+    color: #cbd5e1;
+}
+
+main {
+    width: min(1100px, calc(100% - 32px));
+    margin: 32px auto;
+}
+
+section {
+    margin-bottom: 28px;
+    padding: 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: 0 4px 12px rgb(15 23 42 / 4%);
+}
+
+h2 {
+    margin: 0 0 20px;
+    color: var(--navy);
+    font-size: 1.25rem;
+}
+
+form label {
+    display: block;
+    margin: 14px 0 6px;
+    font-weight: 600;
+}
+
+input[type="text"],
+input[type="number"] {
+    display: block;
+    width: 100%;
+    min-height: 42px;
+    padding: 10px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 7px;
+    background: white;
+    color: var(--text);
+    font: inherit;
+}
+
+input:focus {
+    outline: 3px solid rgb(37 99 235 / 18%);
+    border-color: var(--blue);
+}
+
+form span[style*="color: red"] {
+    display: block;
+    margin-top: 4px;
+    font-size: 0.875rem;
+}
+
+button {
+    min-height: 40px;
+    margin-top: 12px;
+    padding: 9px 16px;
+    border: 0;
+    border-radius: 7px;
+    background: var(--blue);
+    color: white;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+button:hover {
+    background: var(--blue-hover);
+}
+
+button:focus-visible,
+a:focus-visible {
+    outline: 3px solid #93c5fd;
+    outline-offset: 3px;
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+li {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    padding: 16px;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    overflow-wrap: anywhere;
+}
+
+li form {
+    display: inline;
+}
+
+li form button {
+    margin-top: 0;
+}
+
+li form:first-of-type button {
+    background: var(--red);
+}
+
+li form:first-of-type button:hover {
+    background: #b91c1c;
+}
+
+a {
+    color: var(--blue);
+}
+
+li > a {
+    display: inline-block;
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+li > a:hover {
+    background: var(--background);
+    text-decoration: underline;
+}
+
+.stock-out {
+    color: var(--red);
+    font-weight: 700;
+}
+
+.stock-low {
+    color: var(--orange);
+    font-weight: 700;
+}
+
+.stock-in {
+    color: var(--green);
+    font-weight: 700;
+}
+
+.form-error {
+    color: var(--red);
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+.field-error {
+    display: block;
+    margin-top: 4px;
+    color: var(--red);
+    font-size: 0.875rem;
+}
+
+.delete-button {
+    background: var(--red);
+}
+
+.delete-button:hover {
+    background: #b91c1c;
+}
+
+.update-button:hover {
+    background: var(--blue-hover);
+}
+
+.update-button {
+    background: var(--blue);
+}
+
+.item-details {
+    display: flex;
+    flex: 1 1 100%;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 8px 16px;
+}
+
+.item-details strong {
+    color: var(--navy);
+    font-size: 1.05rem;
+    flex-basis: 100%;
+    margin-bottom: 4px;
+}
+
+.item-details > span {
+    color: var(--muted);
+}
+
+.item-details > span span {
+    color: var(--text);
+}
+
+.empty-state {
+    padding: 20px;
+    border: 1px dashed #cbd5e1;
+    border-radius: 8px;
+    color: var(--muted);
+    text-align: center;
+}
+
+@media (min-width: 700px) {
+    form input[type="text"],
+    form input[type="number"] {
+        max-width: 600px;
+    }
+
+    section form > button {
+        margin-top: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    header {
+        padding: 20px 16px;
+    }
+
+    header h1 {
+        font-size: 1.5rem;
+    }
+
+    main {
+        width: calc(100% - 20px);
+        margin: 20px auto;
+    }
+
+    section {
+        padding: 16px;
+    }
+
+    li {
+        align-items: flex-start;
+    }
+}

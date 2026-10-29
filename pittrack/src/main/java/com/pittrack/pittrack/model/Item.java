@@ -1,23 +1,50 @@
 package com.pittrack.pittrack.model;
 
 import java.math.BigDecimal;
-import java.util.List;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Size;
 
 @Entity 
 public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotBlank(message = "SKU is required")
+    @Size(max = 50, message = "SKU must not exceed 50 characters")
+    @Column(nullable = false, unique = true, length = 50)
     private String sku;
+
+    @NotBlank(message = "Name is required")
+    @Size(max = 100, message = "Name must not exceed 100 characters")
+    @Column(nullable = false, length = 100)
     private String name;
+
+    @PositiveOrZero(message = "Quantity cannot be negative")
+    @Column(nullable = false)
     private int quantity;
+
+    @NotBlank(message = "Location is required")
+    @Size(max = 100, message = "Location must not exceed 100 characters")
+    @Column(nullable = false, length = 100)
     private String location;
+
+    @NotBlank(message = "Description is required")
+    @Size(max = 500, message = "Description must not exceed 500 characters")
+    @Column(nullable = false, length = 500)
     private String description;
+
+    @NotNull(message = "Price is required")
+    @DecimalMin(value = "0.00", message = "Price cannot be negative")
+    @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal price;
 
     public Item() {}
@@ -124,10 +151,5 @@ public class Item {
      */
     public void setPrice(BigDecimal price) {
         this.price = price;
-    }
-
-    public void addAttribute(String string, List<Item> allItems) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'addAttribute'");
     }
 }

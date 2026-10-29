@@ -1,7 +1,9 @@
+
 package com.pittrack.pittrack.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,9 +12,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import com.pittrack.pittrack.model.Item;
 import com.pittrack.pittrack.service.ItemService;
 
+import jakarta.validation.Valid;
 
-@Controller 
+@Controller
 public class ItemController {
+
     private final ItemService itemService;
 
     public ItemController(ItemService itemService) {
@@ -21,42 +25,109 @@ public class ItemController {
 
     /** Displays all inventory items.
      * 
-     * @param model The model to which the list of items will be added.
-     * @return The name of the view that will display the items.
+     * @param model The model to hold attributes for the view.
+     * @return The view name for displaying all items.
      */
     @GetMapping("/items")
     public String displayAllItems(Model model) {
         model.addAttribute("items", itemService.getAllItems());
+        model.addAttribute("item", new Item());
         return "items";
     }
 
     /** Adds a new inventory item.
      * 
      * @param item The item to add.
-     * @return The name of the view to which the user will be redirected.
+     * @param result The binding result for validation.
+     * @param model The model to hold attributes for the view.
+     * @return The view name for displaying all items.
      */
     @PostMapping("/items")
-    public String addItem(@ModelAttribute Item item) {
-        itemService.addItem(item);
+    public String addItem(
+            @Valid @ModelAttribute("item") Item item,
+            BindingResult result,
+            Model model) {
+
+        if (result.hasErrors()) {
+            model.addAttribute("items", itemService.getAllItems());
+            return "items";
+        }
+
+        try {
+            itemService.addItem(item);
+        } catch (IllegalArgumentException ex) {
+            result.rejectValue("sku", "duplicate", ex.getMessage());
+            model.addAttribute("items", itemService.getAllItems());
+            return "items";
+        }
+
         return "redirect:/items";
+    }
+
+    /** Displays the form for updating an existing item.
+     * 
+     * @param id The ID of the item to update.
+     * @param model The model to hold attributes for the view.
+     * @return The view name for the update form.
+     */
+    @GetMapping("/items/{id}/update")
+    public String showUpdateForm(
+            @PathVariable Long id,
+            Model model) {
+
+        Item item = itemService.getItemById(id);
+
+        if (item == null) {
+            return "redirect:/items";
+        }
+
+        model.addAttribute("item", item);
+        model.addAttribute("itemId", id);
+
+        return "updateItem";
     }
 
     /** Updates an existing inventory item.
      * 
      * @param id The ID of the item to update.
      * @param updatedItem The updated item details.
-     * @return The name of the view to which the user will be redirected.
+     * @param result The binding result for validation.
+     * @param model The model to hold attributes for the view.
+     * @return The view name for displaying all items.
      */
-    @PostMapping("/items/{id}")
-    public String updateItem(@PathVariable Long id, @ModelAttribute Item updatedItem) {
-        itemService.updateItem(id, updatedItem);
+    @PostMapping("/items/{id}/update")
+    public String updateItem(
+            @PathVariable Long id,
+            @Valid @ModelAttribute("item") Item updatedItem,
+            BindingResult result,
+            Model model) {
+
+        if (result.hasErrors()) {
+            model.addAttribute("itemId", id);
+            return "updateItem";
+        }
+
+        Item existingItem = itemService.getItemById(id);
+
+        if (existingItem == null) {
+            return "redirect:/items";
+        }
+
+        try {
+            itemService.updateItem(id, updatedItem);
+        } catch (IllegalArgumentException ex) {
+            result.rejectValue("sku", "duplicate", ex.getMessage());
+            model.addAttribute("itemId", id);
+            return "updateItem";
+        }
+
         return "redirect:/items";
     }
 
     /** Deletes an existing inventory item.
      * 
      * @param id The ID of the item to delete.
-     * @return The name of the view to which the user will be redirected.
+     * @return The view name for displaying all items.
      */
     @PostMapping("/items/{id}/delete")
     public String deleteItem(@PathVariable Long id) {
@@ -64,34 +135,24 @@ public class ItemController {
         return "redirect:/items";
     }
 
-    /** Displays the form for updating an existing inventory item.
-     * 
-     * @param id The ID of the item to update.
-     * @param model The model to which the item details will be added.
-     * @return The name of the view that will display the update form.
-     */
-    @GetMapping("/items/{id}/update")
-    public String updateItem(@PathVariable Long id, Model model) {
-        Item item = itemService.getItemById(id);
-        if (item != null) {
-            model.addAttribute("item", item);
-            return "updateItem";
-        } else {
-            return "redirect:/items"; // Redirect to items list if item not found
-        }
-    }
-
-    
     /** Displays details for a specific inventory item.
      * 
      * @param id The ID of the item to display.
-     * @param model The model to which the item details will be added.
-     * @return The name of the view that will display the item details.
+     * @param model The model to hold attributes for the view.
+     * @return The view name for displaying item details.
      */
     @GetMapping("/items/{id}")
-    public String displayItemDetails(@PathVariable Long id, Model model) {
-        model.addAttribute("item", itemService.getItemById(id));
+    public String displayItemDetails(
+            @PathVariable Long id,
+            Model model) {
+
+        Item item = itemService.getItemById(id);
+
+        if (item == null) {
+            return "redirect:/items";
+        }
+
+        model.addAttribute("item", item);
         return "itemDetails";
     }
-
 }
