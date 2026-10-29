@@ -1,63 +1,142 @@
-PitTrack
 
-A robotics inventory management system built for FIRST Robotics Competition (FRC) teams.
+# 🔧 PitTrack
 
-PitTrack is a web-based inventory management application designed to help FRC teams organize, track, and manage their robotics equipment, components, and resources.
+### Robotics Inventory Management for FIRST Robotics Competition Teams
 
-Whether it's motors, electronics, tools, spare parts, or competition equipment, PitTrack aims to make inventory management easier so teams can spend less time searching for equipment and more time building robots.
+**PitTrack** is a web-based inventory management application designed specifically for FIRST Robotics Competition (FRC) teams. It helps teams organize, track, and manage their robotics equipment, components, tools, and resources in one centralized location.
 
-The Problem
+From motors and electronics to spare parts and competition equipment, PitTrack aims to simplify inventory management so teams can spend less time searching for equipment and more time building robots.
 
-FRC teams work with hundreds of components, tools, and pieces of equipment throughout the build season and competition season.
+---
 
-Keeping track of inventory can become difficult, especially when multiple team members share equipment and workspace resources.
+## 🎯 The Problem
 
-PitTrack aims to address this by providing a centralized system where each robotics team can manage its own inventory.
+FRC teams work with hundreds of components, tools, and pieces of equipment throughout the build and competition seasons.
 
-Features
-Team Accounts: Create individual accounts for robotics teams.
-Team-Specific Inventory: Each team has its own separate inventory storage.
-Add Equipment: Record equipment names, descriptions, quantities, SKUs, prices, and storage locations.
-Update Equipment: Modify existing inventory information.
-Delete Equipment: Remove items that are no longer needed.
-Inventory Search: Search equipment by name, SKU, or location.
-Stock Monitoring: Identify in-stock, low-stock, and out-of-stock items.
-Account Management: Log out and delete team accounts.
-Technology Stack
-Java – Backend programming language.
-Spring Boot – Application framework.
-Spring Security – Authentication and account security.
-Spring Data JPA / Hibernate – Database access and persistence.
-PostgreSQL – Relational database.
-Thymeleaf – Server-side HTML templating.
-HTML / CSS / JavaScript – Frontend development.
-JUnit – Application testing.
-Project Status
+Managing this inventory can quickly become challenging, especially when equipment is shared between multiple team members and workspace areas.
 
-Currently in development.
+Common challenges include:
 
-Core functionality currently includes team registration, authentication, team-specific inventory storage, inventory management, and account deletion.
+- Losing track of equipment and spare parts.
+- Not knowing how many components are available.
+- Difficulty locating specific tools or materials.
+- Keeping inventory information organized and up to date.
+- Managing shared resources across a robotics team.
 
-Future development may include:
+**PitTrack addresses these challenges** by providing a centralized inventory management system where each robotics team can independently manage its own equipment and resources.
 
-Equipment checkout and return tracking.
-Maintenance records and repair history.
-Inventory activity logs.
-Improved inventory reporting.
-Additional tools for managing robotics team resources.
-Development Goals
+---
 
-PitTrack is also a personal learning project focused on developing practical software engineering skills, including:
+## ✨ Features
 
-Backend application development with Java and Spring Boot.
-Relational database design and team-based data isolation.
-Authentication and authorization.
-CRUD operations and RESTful application concepts.
-Software testing and debugging.
-Version control and GitHub collaboration.
-Application deployment and maintenance.
-Acknowledgments
+### 👥 Team Management
+- Create individual accounts for robotics teams.
+- Secure team authentication.
+- Team-specific inventory storage.
+- Account logout and deletion.
 
-This project was developed independently with assistance from ChatGPT by OpenAI for programming guidance, debugging, code explanations, and development recommendations.
+### 📦 Inventory Management
+- Add new equipment and inventory items.
+- Edit existing inventory information.
+- Delete items that are no longer needed.
+- Store detailed equipment information, including:
+  - Name and description
+  - Quantity
+  - SKU
+  - Price
+  - Storage location
 
-The goal is to continue learning through building a practical application that addresses an actual organizational need within the FRC robotics community.
+### 🔍 Inventory Search
+- Search inventory by equipment name.
+- Find items using their SKU.
+- Search by storage location.
+- Quickly locate specific components and equipment.
+
+### 📊 Stock Monitoring
+- Identify items currently in stock.
+- Track low-stock inventory.
+- Identify out-of-stock items.
+- Keep track of available quantities.
+
+---
+
+## 🛠️ Technology Stack
+
+PitTrack is being developed using Java and the Spring ecosystem, with PostgreSQL for persistent data storage.
+
+| Technology | Purpose |
+|---|---|
+| Java | Backend programming language |
+| Spring Boot | Application framework |
+| Spring Security | Authentication and security |
+| Spring Data JPA | Database access and persistence |
+| Hibernate | Object-relational mapping |
+| PostgreSQL | Relational database |
+| Thymeleaf | Server-side HTML templating |
+| HTML / CSS / JavaScript | Frontend development |
+| JUnit | Application testing |
+| Git / GitHub | Version control and collaboration |
+
+---
+
+## 🚧 Project Status
+
+**Currently in Development**
+
+PitTrack is an ongoing personal software development project. Its core functionality is currently being implemented, with the goal of creating a practical and reliable inventory management solution for FRC teams.
+
+### Implemented Functionality
+- [x] Team registration
+- [x] User authentication
+- [x] Team-specific inventory storage
+- [x] Add inventory items
+- [x] Update inventory items
+- [x] Delete inventory items
+- [x] Inventory management
+- [x] Team account deletion
+
+### Planned Features
+- [ ] Equipment checkout and return tracking
+- [ ] Maintenance records and repair history
+- [ ] Inventory activity logs
+- [ ] Improved inventory reporting
+- [ ] Additional tools for managing robotics team resources
+
+---
+
+## 💡 Development Goals
+
+PitTrack is also a personal learning project focused on developing practical software engineering skills through building a real-world application.
+
+Key areas of learning include:
+
+- **Backend Development:** Building applications with Java and Spring Boot.
+- **Database Design:** Designing relational databases and implementing team-based data isolation.
+- **Authentication & Authorization:** Implementing secure account management with Spring Security.
+- **Application Architecture:** Understanding CRUD operations, MVC architecture, and RESTful concepts.
+- **Software Testing:** Writing tests, debugging issues, and improving application reliability.
+- **Version Control:** Using Git and GitHub to manage development.
+- **Deployment & Maintenance:** Learning how to deploy, maintain, and improve a production-style application.
+
+---
+
+## 🤖 Acknowledgments
+
+PitTrack was developed independently with assistance from **ChatGPT by OpenAI**.
+
+ChatGPT was used as a development resource for:
+- Programming guidance and explanations.
+- Debugging and troubleshooting.
+- Understanding Java and Spring Boot concepts.
+- Database design recommendations.
+- Software architecture and development suggestions.
+
+The project remains an independent learning endeavor, with the goal of developing practical engineering skills while addressing an actual organizational need within the FRC robotics community.
+
+---
+
+<p align="center">
+  <b>Built for robotics teams. Designed to keep inventory on track.</b>
+  <br>
+  🔧 PitTrack
+</p>
