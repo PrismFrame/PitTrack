@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>PitTrack | Manage Subteams</title>
+
+    <link rel="stylesheet" th:href="@{/style.css}">
+    <link rel="stylesheet" th:href="@{/dashboard.css}">
+    <link rel="stylesheet" th:href="@{/subteams.css}">
+</head>
+
+<body class="dashboard-page">
+
+<div class="dashboard-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="brand-logo">3786</div>
+            <div>
+                <h2>PITTRACK</h2>
+                <span>CHARGER ROBOTICS</span>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+
+            <span class="nav-label">MAIN MENU</span>
+
+            <a th:href="@{/dashboard}" class="nav-link">
+                <span>▦</span> Dashboard
+            </a>
+
+            <a th:href="@{/items}" class="nav-link">
+                <span>▤</span> Inventory
+            </a>
+
+            <span class="nav-label">MANAGEMENT</span>
+
+            <a th:href="@{/subteams}" class="nav-link active">
+                <span>♧</span> Subteams
+            </a>
+
+            <a th:href="@{/items}" class="nav-link">
+                <span>＋</span> Manage Item
+            </a>
+        </nav>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="dashboard-main">
+
+        <header class="dashboard-header">
+
+            <div>
+                <p class="eyebrow">CHARGER ROBOTICS / 3786</p>
+                <h1>Subteam Management</h1>
+                <p class="header-description">
+                    Create and organize your robotics subteams.
+                </p>
+            </div>
+
+            <div class="header-actions">
+                <form th:action="@{/logout}" method="post">
+                    <button type="submit" class="logout-button">
+                        Log Out
+                    </button>
+                </form>
+            </div>
+
+        </header>
+
+        <!-- NOTIFICATIONS -->
+        <div th:if="${success}" class="subteam-message success-message"
+             th:text="${success}"></div>
+
+        <div th:if="${error}" class="subteam-message error-message"
+             th:text="${error}"></div>
+
+        <!-- CREATE SUBTEAM -->
+        <section class="dashboard-panel create-subteam-panel">
+
+            <div class="panel-heading">
+                <div>
+                    <h2>Create a Subteam</h2>
+                    <p>Add a new group to Charger Robotics.</p>
+                </div>
+            </div>
+
+            <form th:action="@{/subteams}"
+                  method="post"
+                  class="subteam-form">
+
+                <label for="name">Subteam Name</label>
+
+                <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    maxlength="100"
+                    placeholder="Example: Mechanical"
+                    required>
+
+                <label for="description">Description</label>
+
+                <textarea
+                    id="description"
+                    name="description"
+                    maxlength="500"
+                    rows="3"
+                    placeholder="What does this subteam work on?"></textarea>
+
+                <button type="submit" class="create-subteam-button">
+                    + Create Subteam
+                </button>
+
+            </form>
+
+        </section>
+
+        <!-- SUBTEAM LIST -->
+        <section class="dashboard-panel subteam-list-panel">
+
+            <div class="panel-heading">
+                <div>
+                    <h2>Your Subteams</h2>
+                    <p>All subteams belonging to your team account.</p>
+                </div>
+
+                <span class="subteam-count"
+                      th:text="${#lists.size(subteams)} + ' Subteams'">
+                    0 Subteams
+                </span>
+            </div>
+
+            <div th:if="${#lists.isEmpty(subteams)}"
+                 class="empty-state">
+
+                <h3>No subteams yet</h3>
+
+                <p>
+                    Create your first subteam using the form above.
+                </p>
+
+            </div>
+
+            <div class="subteam-grid"
+                 th:unless="${#lists.isEmpty(subteams)}">
+
+                <article class="subteam-card"
+                         th:each="subteam : ${subteams}">
+
+                    <div class="subteam-card-top">
+
+                        <div class="subteam-icon">♧</div>
+
+                        <span class="subteam-label">
+                            TEAM GROUP
+                        </span>
+
+                    </div>
+
+                    <h3 th:text="${subteam.name}">
+                        Mechanical
+                    </h3>
+
+                    <p class="subteam-description"
+                       th:text="${#strings.isEmpty(subteam.description)
+                           ? 'No description provided.'
+                           : subteam.description}">
+                        Works on robot construction.
+                    </p>
+
+                    <div class="subteam-card-footer">
+
+                        <small>
+                            Created:
+                            <span th:text="${#temporals.format(
+                                subteam.createdAt, 'MMM dd, yyyy')}">
+                                Jan 01, 2026
+                            </span>
+                        </small>
+
+                        <a th:href="@{/dashboard(subteamId=${subteam.id})}">
+                            View Dashboard →
+                        </a>
+
+                        <form th:action="@{/subteams/{id}/delete(id=${subteam.id})}"
+                            method="post"
+                            onsubmit="return confirm('Are you sure you want to delete this subteam? Items will remain in inventory, but their association with this subteam will be removed.');">
+
+                            <button type="submit" class="delete-subteam-button">
+                                Delete
+                            </button>
+                        </form>
+
+                    </div>
+
+                </article>
+
+            </div>
+
+        </section>
+
+        <footer class="dashboard-footer">
+            <p>PitTrack · Charger Robotics Team 3786</p>
+            <p>Subteam Management</p>
+        </footer>
+
+    </main>
+
+</div>
+
+</body>
+</html>

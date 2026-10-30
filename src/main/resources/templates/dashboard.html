@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>PitTrack | Charger Robotics 3786</title>
+
+    <link rel="stylesheet" th:href="@{/style.css}">
+    <link rel="stylesheet" th:href="@{/dashboard.css}">
+</head>
+
+<body class="dashboard-page">
+
+<div class="dashboard-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="brand-logo">3786</div>
+            <div>
+                <h2>PITTRACK</h2>
+                <span>CHARGER ROBOTICS</span>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+
+            <span class="nav-label">MAIN MENU</span>
+
+            <a th:href="@{/dashboard}" class="nav-link active">
+                <span>▦</span> Dashboard
+            </a>
+
+            <a th:href="@{/items}" class="nav-link">
+                <span>▤</span> Inventory
+            </a>
+
+            <span class="nav-label">MANAGEMENT</span>
+
+            <a th:href="@{/subteams}" class="nav-link">
+                <span>♧</span> Subteams
+            </a>
+
+            <a th:href="@{/items}" class="nav-link">
+                <span>＋</span> Manage Item
+            </a>
+        </nav>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="dashboard-main">
+
+        <!-- TOP BAR -->
+        <header class="dashboard-header">
+
+            <!-- SUBTEAM DASHBOARD INDICATOR -->
+            <section th:if="${selectedSubteam != null}"
+                    class="subteam-dashboard-banner">
+
+                <div class="subteam-banner-content">
+
+                    <div class="subteam-banner-icon">
+                        ♧
+                    </div>
+
+                    <div>
+                        <span class="subteam-banner-label">
+                            SUBTEAM DASHBOARD
+                        </span>
+
+                        <h2 th:text="${selectedSubteam.name}">
+                            Mechanical
+                        </h2>
+
+                        <p th:text="${selectedSubteam.description != null
+                            and !#strings.isEmpty(selectedSubteam.description)
+                            ? selectedSubteam.description
+                            : 'Viewing inventory assigned to this subteam and shared items.'}">
+                            Viewing this subteam's inventory.
+                        </p>
+                    </div>
+
+                </div>
+
+                <a th:href="@{/dashboard}"
+                class="main-dashboard-button">
+                    ← Return to Main Dashboard
+                </a>
+
+            </section>
+
+            <div>
+                <h1>
+                    Team #<span th:text="${teamNumber}">0000</span> Dashboard
+                </h1>
+                <p class="header-description">
+                    Welcome to your item management center.
+                </p>
+            </div>
+
+            <div class="header-actions">
+
+                <a th:href="@{/items}" class="header-button">
+                    + Add Item
+                </a>
+
+                <form th:action="@{/logout}" method="post">
+                    <button type="submit" class="logout-button">
+                        Log Out
+                    </button>
+                </form>
+
+                <form th:action="@{/account/delete}" method="post"
+                    onsubmit="return confirm('WARNING: This will permanently delete your team account and ALL inventory. Are you absolutely sure?');">
+
+                    <button type="submit" class="account-delete-button">
+                        Delete Account
+                    </button>
+                </form>
+            </div>
+
+        </header>
+
+        <!-- STATISTICS -->
+        <section class="stats-section">
+
+            <div class="section-heading">
+                <div>
+                    <h2>Inventory Overview</h2>
+                    <p>Current item statistics</p>
+                </div>
+                <span class="live-indicator">
+                    <span></span> DATABASE CONNECTED
+                </span>
+            </div>
+
+            <!-- SUBTEAM FILTER -->
+            <div class="dashboard-filter">
+
+                <form th:action="@{/dashboard}" method="get">
+
+                    <label for="subteamId">Filter by Subteam</label>
+
+                    <select id="subteamId" name="subteamId"
+                            onchange="this.form.submit()">
+
+                        <option value=""
+                                th:selected="${selectedSubteamId == null}">
+                            All Subteams
+                        </option>
+
+                        <option th:each="subteam : ${subteams}"
+                                th:value="${subteam.id}"
+                                th:text="${subteam.name}"
+                                th:selected="${selectedSubteamId != null
+                                    and selectedSubteamId.equals(subteam.id)}">
+                        </option>
+
+                    </select>
+
+                </form>
+
+            </div>
+
+            <div class="stats-grid">
+
+                <div class="stat-card blue-card">
+                    <div class="stat-top">
+                        <span>Total Items</span>
+                        <span class="stat-icon">▤</span>
+                    </div>
+                    <strong th:text="${stats.totalItems}">0</strong>
+                    <small>Total units in inventory</small>
+                </div>
+
+                <div class="stat-card green-card">
+                    <div class="stat-top">
+                        <span>In Stock</span>
+                        <span class="stat-icon">✓</span>
+                    </div>
+                    <strong th:text="${stats.inStock}">0</strong>
+                    <small>Units above low-stock threshold</small>
+                </div>
+
+                <div class="stat-card yellow-card">
+                    <div class="stat-top">
+                        <span>Low Stock</span>
+                        <span class="stat-icon">!</span>
+                    </div>
+                    <strong th:text="${stats.lowStock}">0</strong>
+                    <small>Units needing attention</small>
+                </div>
+
+                <div class="stat-card red-card">
+                    <div class="stat-top">
+                        <span>Out of Stock</span>
+                        <span class="stat-icon">×</span>
+                    </div>
+                    <strong th:text="${stats.outOfStock}">0</strong>
+                    <small>Item records with zero stock</small>
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- CONTENT GRID -->
+        <div class="dashboard-content-grid">
+
+            <!-- RECENT INVENTORY -->
+            <section class="dashboard-panel recent-panel">
+
+                <div class="panel-heading">
+                    <div>
+                        <h2>Recent Item</h2>
+                        <p>Latest inventory records</p>
+                    </div>
+
+                    <a th:href="@{/items}" class="view-link">
+                        View Inventory →
+                    </a>
+                </div>
+
+                <div th:if="${#lists.isEmpty(stats.recentItems)}"
+                     class="empty-state">
+                    <h3>No item found</h3>
+                    <p>Add your first inventory item to get started.</p>
+                    <a th:href="@{/items}">Go to Inventory</a>
+                </div>
+
+                <div class="table-wrapper"
+                     th:unless="${#lists.isEmpty(stats.recentItems)}">
+
+                    <table class="dashboard-table">
+
+                        <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>Quantity</th>
+                            <th>Status</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+
+                        <tr th:each="item : ${stats.recentItems}">
+
+                            <td>
+                                <strong th:text="${item.name}">
+                                    Item Name
+                                </strong>
+                            </td>
+
+                            <td th:text="${item.quantity}">
+                                0
+                            </td>
+
+                            <td>
+                                <span th:if="${item.quantity <= 0}"
+                                      class="status-badge status-out">
+                                    Out of Stock
+                                </span>
+
+                                <span th:if="${item.quantity > 0
+                                              and item.quantity <= 5}"
+                                      class="status-badge status-low">
+                                    Low Stock
+                                </span>
+
+                                <span th:if="${item.quantity > 5}"
+                                      class="status-badge status-in">
+                                    In Stock
+                                </span>
+                            </td>
+
+                        </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+            <!-- QUICK ACTIONS -->
+            <section class="dashboard-panel actions-panel">
+
+                <div class="panel-heading">
+                    <div>
+                        <h2>Quick Actions</h2>
+                        <p>Manage your item</p>
+                    </div>
+                </div>
+
+                <a th:href="@{/items}" class="action-card">
+                    <span class="action-icon">＋</span>
+                    <span>
+                        <strong>Add Item</strong>
+                        <small>Add new item to inventory</small>
+                    </span>
+                    <span class="action-arrow">→</span>
+                </a>
+
+                <a th:href="@{/items}" class="action-card">
+                    <span class="action-icon">⌕</span>
+                    <span>
+                        <strong>View Inventory</strong>
+                        <small>Search and manage item</small>
+                    </span>
+                    <span class="action-arrow">→</span>
+                </a>
+            </section>
+        </div>
+
+        <footer class="dashboard-footer">
+            <p>PitTrack · Charger Robotics Team 3786</p>
+            <p>Item Management System</p>
+        </footer>
+
+    </main>
+
+</div>
+
+</body>
+</html>

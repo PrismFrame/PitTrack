@@ -8,28 +8,31 @@
 </head>
 <body>
     <header>
-        <span class="team-number"
-            th:text="'Team #' + ${teamNumber}">
-            Team #0000
-        </span>
-        <h1>PitTrack Inventory</h1>
-        <p>View and manage your inventory items.</p>
+        <div class="inventory-header">
+            <a th:href="@{/dashboard}" class="back-dashboard-button">
+                <span class="back-arrow">←</span>
+                Dashboard
+            </a>
 
-        <div class="account-controls">
-            <form th:action="@{/logout}" method="post">
-                <button type="submit" class="logout-button">
-                    Logout
-                </button>
-            </form>
+            <div class="inventory-title">
+                <h1>
+                    <span class="inventory-team-number"
+                        th:text="${teamNumber}">
+                        0000
+                    </span>
+                    PitTrack Inventory
+                </h1>
 
-            <form th:action="@{/account/delete}" method="post"
-                onsubmit="return confirm('WARNING: This will permanently delete your team account and ALL inventory. Are you absolutely sure?');">
+                <p>View and manage your inventory items.</p>
+            </div>
 
-                <button type="submit" class="account-delete-button">
-                    Delete Account
-                </button>
-            </form>
-
+            <div class="account-controls">
+                <form th:action="@{/logout}" method="post">
+                    <button type="submit" class="logout-button">
+                        Logout
+                    </button>
+                </form>
+            </div>
         </div>
     </header>
 
@@ -70,6 +73,44 @@
                 <input type="text" id="location" th:field="*{location}" required>
                 <span th:if="${#fields.hasErrors('location')}" th:errors="*{location}" class="field-error"></span>
                 <br>
+
+                <div class="subteam-assignment">
+                    <h3>Equipment Access</h3>
+
+                    <label class="shared-option">
+                        <input
+                            type="checkbox"
+                            name="sharedWithAll"
+                            value="true"
+                            checked
+                        >
+                        Shared with all subteams
+                    </label>
+
+                    <p class="form-help">
+                        Uncheck this option to assign equipment to specific subteams.
+                    </p>
+
+                    <div class="subteam-options">
+                        <label th:each="subteam : ${subteams}">
+                            <input
+                                type="checkbox"
+                                name="subteamIds"
+                                th:value="${subteam.id}"
+                            >
+
+                            <span th:text="${subteam.name}"></span>
+                        </label>
+                    </div>
+
+                    <p th:if="${#lists.isEmpty(subteams)}"
+                    class="form-help">
+                        No subteams created yet.
+                        <a th:href="@{/subteams}">Create a subteam</a>
+                    </p>
+
+                </div>
+
 
                 <button type="submit" class="update-button">Add Item</button>
             </form>
