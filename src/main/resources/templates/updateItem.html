@@ -14,52 +14,56 @@
     </header>
 
     <main>
-        <form th:action="@{/items/{id}/update(id=${item.id})}"
-              th:object="${item}"
-              method="post">
-            
-            <p th:if="${#fields.hasErrors()}" style="color: red;">
-                Please correct the errors below.
-            </p>
+        <section class="update-item-section">
+            <h2>Update Item Details</h2>
 
-            <label for="name">Name:</label>
-            <input type="text" id="name" th:field="*{name}" required>
-            <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="color: red;"></span>
-            <br>
+            <form th:action="@{/items/{id}/update(id=${item.id})}"
+                th:object="${item}"
+                method="post">
+                
+                <p th:if="${#fields.hasErrors()}" style="color: red;">
+                    Please correct the errors below.
+                </p>
 
-            <label for="description">Description:</label>
-            <input type="text" id="description"
-                   th:field="*{description}" required>
-            <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}" style="color: red;"></span>
-            <br>
+                <label for="name">Name:</label>
+                <input type="text" id="name" th:field="*{name}" required>
+                <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="color: red;"></span>
+                <br>
 
-            <label for="quantity">Quantity:</label>
-            <input type="number" id="quantity"
-                   th:field="*{quantity}" min="0" required>
-            <span th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}" style="color: red;"></span>
-            <br>
+                <label for="description">Description:</label>
+                <input type="text" id="description"
+                    th:field="*{description}" required>
+                <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}" style="color: red;"></span>
+                <br>
 
-            <label for="sku">SKU:</label>
-            <input type="text" id="sku" th:field="*{sku}" required>
-            <span th:if="${#fields.hasErrors('sku')}" th:errors="*{sku}" style="color: red;"></span>
-            <br>
+                <label for="quantity">Quantity:</label>
+                <input type="number" id="quantity"
+                    th:field="*{quantity}" min="0" required>
+                <span th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}" style="color: red;"></span>
+                <br>
 
-            <label for="price">Price ($):</label>
-            <input type="number" id="price"
-                   th:field="*{price}" min="0" step="0.01" required>
-            <span th:if="${#fields.hasErrors('price')}" th:errors="*{price}" style="color: red;"></span>
-            <br>
+                <label for="sku">SKU:</label>
+                <input type="text" id="sku" th:field="*{sku}" required>
+                <span th:if="${#fields.hasErrors('sku')}" th:errors="*{sku}" style="color: red;"></span>
+                <br>
 
-            <label for="location">Location:</label>
-            <input type="text" id="location"
-                   th:field="*{location}" required>
-            <span th:if="${#fields.hasErrors('location')}" th:errors="*{location}" style="color: red;"></span>
-            <br>
+                <label for="price">Price ($):</label>
+                <input type="number" id="price"
+                    th:field="*{price}" min="0" step="0.01" required>
+                <span th:if="${#fields.hasErrors('price')}" th:errors="*{price}" style="color: red;"></span>
+                <br>
 
-            <button type="submit">Save Changes</button>
-        </form>
+                <label for="location">Location:</label>
+                <input type="text" id="location"
+                    th:field="*{location}" required>
+                <span th:if="${#fields.hasErrors('location')}" th:errors="*{location}" style="color: red;"></span>
+                <br>
 
-        <p><a th:href="@{/items}">Cancel and return to inventory</a></p>
+                <button type="submit">Save Changes</button>
+            </form>
+
+            <p><a th:href="@{/items}">Cancel and return to inventory</a></p>
+        </section>
     </main>
 </body>
 </html>

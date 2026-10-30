@@ -1136,3 +1136,227 @@ body.register-page .register-card input {
         font-size: 0.8rem;
     }
 }
+
+/* Subteam equipment assignment */
+.subteam-assignment {
+    margin-top: 22px;
+    padding: 20px;
+
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+}
+
+.subteam-assignment h3 {
+    margin-top: 0;
+    color: var(--accent);
+}
+
+.subteam-assignment input[type="checkbox"] {
+    width: 17px;
+    height: 17px;
+    accent-color: var(--accent);
+    cursor: pointer;
+}
+
+.subteam-assignment label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 10px 0;
+    cursor: pointer;
+}
+
+.subteam-options {
+    display: grid;
+    grid-template-columns: repeat(
+        auto-fit,
+        minmax(150px, 1fr)
+    );
+    gap: 8px;
+    margin-top: 14px;
+}
+
+.form-help {
+    color: var(--muted);
+    font-size: 0.85rem;
+}
+
+/* Back to Dashboard button */
+.back-dashboard-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+
+    padding: 11px 20px;
+    margin-bottom: 18px;
+
+    background: #17243a;
+    color: #ffffff;
+
+    border: 2px solid #f5b700;
+    border-radius: 9px;
+
+    font-size: 0.9rem;
+    font-weight: 650;
+    text-decoration: none;
+
+    transition: all 0.2s ease;
+}
+
+.back-dashboard-button:hover {
+    background: #f5b700;
+    color: #111827;
+    border-color: #f5b700;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(245, 183, 0, 0.25);
+}
+
+/* Inventory Header Layout */
+.inventory-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 15px;
+    width: 100%;
+}
+
+/* Team Number */
+.inventory-header .team-number {
+    display: inline-block;
+    width: fit-content;
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 750;
+    color: var(--accent);
+}
+
+/* Account Controls */
+.inventory-header .account-controls {
+    position: static;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.inventory-header .account-controls form {
+    margin: 0;
+}
+
+/* Dashboard Button */
+.inventory-header .back-dashboard-button {
+    margin: 0;
+    white-space: nowrap;
+}
+
+/* Mobile Layout */
+@media (max-width: 650px) {
+    .inventory-header {
+        justify-content: center;
+    }
+
+    .inventory-header .team-number {
+        order: -1;
+        width: 100%;
+        text-align: center;
+    }
+
+    .inventory-header .account-controls {
+        position: static;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+}
+
+/* Inventory Title */
+header .inventory-title {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+header .inventory-title h1 {
+    margin: 0 !important;
+    padding: 0;
+    line-height: 1.2;
+    color: #ffffff;
+}
+
+header .inventory-title p {
+    margin: 0 !important;
+    padding: 0;
+    line-height: 1.4;
+    color: #c2cfe2;
+}
+
+/* Team Number beside title */
+.inventory-team-number {
+    color: var(--accent);
+    font-weight: 850;
+    margin-right: 8px;
+}
+
+/* Update Item Card */
+.update-item-section {
+    max-width: 750px;
+    margin: 32px auto;
+    padding: 30px;
+
+    background: var(--surface);
+
+    border: 1px solid var(--accent);
+    border-radius: var(--radius);
+
+    box-shadow: var(--shadow);
+}
+
+/* Update Item Heading */
+.update-item-section h2 {
+    color: white;
+    margin-bottom: 24px;
+}
+
+/* Update Item Form */
+.update-item-form {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.update-item-form label {
+    margin: 8px 0 2px;
+}
+
+.update-item-form input {
+    width: 100%;
+    max-width: none;
+}
+
+/* Save Changes Button */
+.update-item-form button {
+    align-self: flex-start;
+    margin-top: 20px;
+}
+
+/* Cancel Link */
+.cancel-update-link {
+    display: inline-block;
+    margin-top: 12px;
+    color: var(--muted);
+    text-decoration: none;
+}
+
+.cancel-update-link:hover {
+    color: var(--accent);
+}
+
+/* Mobile */
+@media (max-width: 699px) {
+    .update-item-section {
+        margin: 20px auto;
+        padding: 20px 16px;
+    }
+}

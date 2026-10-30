@@ -13,11 +13,18 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 import com.pittrack.pittrack.account.TeamAccount;
+import com.pittrack.pittrack.subteam.Subteam;
+
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+import java.util.HashSet;
+import java.util.Set;
+
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.JoinTable;
 
 @Entity
 @Table(
@@ -62,6 +69,18 @@ public class Item {
     @DecimalMin(value = "0.00", message = "Price cannot be negative")
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal price;
+
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "item_subteams",
+        joinColumns = @JoinColumn(name = "item_id"),
+        inverseJoinColumns = @JoinColumn(name = "subteam_id")
+    )
+    private Set<Subteam> subteams = new HashSet<>();
+
+    @Column(nullable = false)
+    private boolean sharedWithAll = true;
 
     public Item() {}
 
@@ -175,5 +194,21 @@ public class Item {
      */
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public Set<Subteam> getSubteams() {
+        return subteams;
+    }
+
+    public void setSubteams(Set<Subteam> subteams) {
+        this.subteams = subteams;
+    }
+
+    public boolean isSharedWithAll() {
+        return sharedWithAll;
+    }
+
+    public void setSharedWithAll(boolean sharedWithAll) {
+        this.sharedWithAll = sharedWithAll;
     }
 }
