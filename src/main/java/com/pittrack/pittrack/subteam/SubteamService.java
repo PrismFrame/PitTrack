@@ -57,9 +57,16 @@ public class SubteamService {
 
         Subteam subteam = new Subteam();
         subteam.setName(cleanName);
-        subteam.setDescription(
-            description == null ? "" : description.trim()
-        );
+        String cleanDescription =
+            description == null ? "" : description.trim();
+
+        if (cleanDescription.length() > 500) {
+            throw new IllegalArgumentException(
+                "Description cannot exceed 500 characters."
+            );
+        }
+
+        subteam.setDescription(cleanDescription);
         subteam.setTeamAccount(teamAccount);
 
         return subteamRepository.save(subteam);

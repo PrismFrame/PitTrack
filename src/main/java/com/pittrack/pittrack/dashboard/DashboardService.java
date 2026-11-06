@@ -6,12 +6,14 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.pittrack.pittrack.item.Item;
 import com.pittrack.pittrack.item.ItemRepository;
 import com.pittrack.pittrack.subteam.SubteamRepository;
 
 @Service
+@Transactional(readOnly = true)
 public class DashboardService {
     private static final int LOW_STOCK_THRESHOLD = 5;
     private final ItemRepository itemRepository;

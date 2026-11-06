@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 
 import com.pittrack.pittrack.account.TeamAccount;
 import com.pittrack.pittrack.item.Item;
@@ -29,6 +30,7 @@ public class Subteam {
     @Column(nullable = false, length = 100)
     private String name;
 
+    @Size(max = 500)
     @Column(length = 500)
     private String description;
 
