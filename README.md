@@ -85,41 +85,6 @@ PitTrack is being developed using Java and the Spring ecosystem, with PostgreSQL
 
 PitTrack is an ongoing personal software development project. Its core functionality is currently being implemented, with the goal of creating a practical and reliable inventory management solution for FRC teams.
 
-### Implemented Functionality
-- [x] Team registration
-- [x] User authentication
-- [x] Team-specific inventory storage
-- [x] Add inventory items
-- [x] Update inventory items
-- [x] Delete inventory items
-- [x] Inventory management
-- [x] Team account deletion
-
-### Planned Features
-- [ ] Equipment checkout and return tracking
-- [ ] Maintenance records and repair history
-- [ ] Inventory activity logs
-- [ ] Improved inventory reporting
-- [ ] Additional tools for managing robotics team resources
-
----
-
-## 💡 Development Goals
-
-PitTrack is also a personal learning project focused on developing practical software engineering skills through building a real-world application.
-
-Key areas of learning include:
-
-- **Backend Development:** Building applications with Java and Spring Boot.
-- **Database Design:** Designing relational databases and implementing team-based data isolation.
-- **Authentication & Authorization:** Implementing secure account management with Spring Security.
-- **Application Architecture:** Understanding CRUD operations, MVC architecture, and RESTful concepts.
-- **Software Testing:** Writing tests, debugging issues, and improving application reliability.
-- **Version Control:** Using Git and GitHub to manage development.
-- **Deployment & Maintenance:** Learning how to deploy, maintain, and improve a production-style application.
-
----
-
 ## 🤖 Acknowledgments
 
 PitTrack was developed independently with assistance from **ChatGPT by OpenAI**.
