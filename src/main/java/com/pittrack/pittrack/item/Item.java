@@ -43,7 +43,8 @@ public class Item {
     @JoinColumn(name = "team_account_id", nullable = false)
     private TeamAccount teamAccount;
 
-    @Column(nullable = false, length = 50)
+    @Size(max = 50, message = "SKU must not exceed 50 characters")
+    @Column(nullable = true, length = 50)
     private String sku;
 
     @NotBlank(message = "Name is required")

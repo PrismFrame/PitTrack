@@ -1,19 +1,24 @@
 package com.pittrack.pittrack.account;
 
+import java.nio.charset.StandardCharsets;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.pittrack.pittrack.item.ItemRepository;
+import com.pittrack.pittrack.subteam.SubteamRepository;
 
 @Service
 public class TeamAccountService {
     private final TeamAccountRepository repository;
+    private final SubteamRepository subteamRepository;
     private final ItemRepository itemRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public TeamAccountService(TeamAccountRepository teamAccountRepository, ItemRepository itemRepository, PasswordEncoder passwordEncoder) {
+    public TeamAccountService(TeamAccountRepository teamAccountRepository, SubteamRepository subteamRepository, ItemRepository itemRepository, PasswordEncoder passwordEncoder) {
         this.repository = teamAccountRepository;
+        this.subteamRepository = subteamRepository;
         this.passwordEncoder = passwordEncoder;
         this.itemRepository = itemRepository;
     }
@@ -31,7 +36,15 @@ public class TeamAccountService {
         }
 
         if (password == null || password.length() < 12) {
-            throw new IllegalArgumentException("Password must be at least 12 characters long.");
+            throw new IllegalArgumentException(
+                "Password must be at least 12 characters long."
+            );
+        }
+
+        if (password.getBytes(StandardCharsets.UTF_8).length > 72) {
+            throw new IllegalArgumentException(
+                "Password cannot exceed 72 UTF-8 bytes."
+            );
         }
 
         if (repository.existsByTeamNumber(teamNumber)) {
@@ -49,16 +62,25 @@ public class TeamAccountService {
      */
     @Transactional
     public void deleteAccount(String teamNumber) {
+
         if (teamNumber == null || teamNumber.isBlank()) {
-            throw new IllegalArgumentException("Invalid team number.");
+            throw new IllegalArgumentException(
+                "Invalid team number."
+            );
         }
 
         TeamAccount account = repository.findByTeamNumber(teamNumber)
-                .orElseThrow(() ->
-                    new IllegalArgumentException("Team account not found."));
+            .orElseThrow(() ->
+                new IllegalArgumentException("Team account not found.")
+            );
 
+        // Delete inventory first.
         itemRepository.deleteByTeamAccount_TeamNumber(teamNumber);
 
+        // Delete subteams.
+        subteamRepository.deleteByTeamAccount_TeamNumber(teamNumber);
+
+        // Delete the team account.
         repository.delete(account);
     }
 }

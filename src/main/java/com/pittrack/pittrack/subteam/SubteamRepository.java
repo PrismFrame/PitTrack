@@ -11,4 +11,5 @@ public interface SubteamRepository extends JpaRepository<Subteam, Long> {
     boolean existsByIdAndTeamAccount_TeamNumber(Long id, String teamNumber);
     List<Subteam> findAllByIdInAndTeamAccount_TeamNumber(List<Long> uniqueIds, String teamNumber);
     Optional<Subteam> findByIdAndTeamAccount_TeamNumber(Long id, String teamNumber);
+    long deleteByTeamAccount_TeamNumber(String teamNumber);
 }

@@ -112,8 +112,13 @@
                     </button>
                 </form>
 
-                <form th:action="@{/account/delete}" method="post"
-                    onsubmit="return confirm('WARNING: This will permanently delete your team account and ALL inventory. Are you absolutely sure?');">
+                <form th:action="@{/account/delete}"
+                    method="post"
+                    onsubmit="return confirm('Are you absolutely sure you want to permanently delete your account?');">
+
+                    <input type="hidden"
+                        th:name="${_csrf.parameterName}"
+                        th:value="${_csrf.token}">
 
                     <button type="submit" class="account-delete-button">
                         Delete Account
@@ -172,7 +177,7 @@
                         <span class="stat-icon">▤</span>
                     </div>
                     <strong th:text="${stats.totalItems}">0</strong>
-                    <small>Total units in inventory</small>
+                    <small>Total inventory records</small>
                 </div>
 
                 <div class="stat-card green-card">
@@ -181,7 +186,7 @@
                         <span class="stat-icon">✓</span>
                     </div>
                     <strong th:text="${stats.inStock}">0</strong>
-                    <small>Units above low-stock threshold</small>
+                    <small>Item records above low-stock threshold</small>
                 </div>
 
                 <div class="stat-card yellow-card">
@@ -190,7 +195,7 @@
                         <span class="stat-icon">!</span>
                     </div>
                     <strong th:text="${stats.lowStock}">0</strong>
-                    <small>Units needing attention</small>
+                    <small>Item records needing attention</small>
                 </div>
 
                 <div class="stat-card red-card">

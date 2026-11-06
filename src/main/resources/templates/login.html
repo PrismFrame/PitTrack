@@ -32,6 +32,12 @@
                 Invalid team number or password.
             </p>
 
+            <p th:if="${param.rateLimit}"
+                class="login-message login-error"
+                role="alert">
+                    Too many login attempts. Please wait before trying again.
+            </p>
+
             <p th:if="${param.logout}"
                class="login-message login-success">
                 You have been logged out.

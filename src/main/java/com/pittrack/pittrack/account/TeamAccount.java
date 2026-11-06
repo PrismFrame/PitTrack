@@ -9,10 +9,19 @@ public class TeamAccount {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "team_number", nullable = false, unique = true)
+    @Column(
+        name = "team_number",
+        nullable = false,
+        unique = true,
+        length = 30
+    )
     private String teamNumber;
 
-    @Column(name = "password_hash", nullable = false)
+    @Column(
+        name = "password_hash",
+        nullable = false,
+        length = 100
+    )
     private String passwordHash;
 
     protected TeamAccount() {}

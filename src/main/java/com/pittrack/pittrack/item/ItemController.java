@@ -76,7 +76,7 @@ public class ItemController {
         try {
             itemService.addItem(item, teamNumber, subteamIds, sharedWithAll);
         } catch (IllegalArgumentException ex) {
-            result.rejectValue("sku", "duplicate", ex.getMessage());
+            result.reject("item.error", ex.getMessage());
 
             model.addAttribute("items", itemService.getAllItems(teamNumber));
             model.addAttribute("teamNumber", teamNumber);
@@ -141,7 +141,7 @@ public class ItemController {
         try {
             itemService.updateItem(id, updatedItem, teamNumber, subteamIds, sharedWithAll);
         } catch (IllegalArgumentException ex) {
-            result.rejectValue("sku", "duplicate", ex.getMessage());
+            result.reject("item.error", ex.getMessage());
 
             model.addAttribute("itemId", id);
             populateForm(model, teamNumber);
