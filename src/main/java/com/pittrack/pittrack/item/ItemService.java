@@ -212,6 +212,7 @@ public class ItemService {
         item.setLocation(updatedItem.getLocation());
         item.setDescription(updatedItem.getDescription());
         item.setPrice(updatedItem.getPrice());
+        item.setLowStockThreshold(updatedItem.getLowStockThreshold());
 
         applySubteamSettings(
             item,
@@ -263,6 +264,7 @@ public class ItemService {
                 item.getLocation(),
                 item.getDescription(),
                 item.getPrice(),
+                item.getLowStockThreshold(),
                 item.isSharedWithAll(),
                 item.getSubteams().stream()
                     .map(Subteam::getName)
@@ -311,9 +313,12 @@ public class ItemService {
                 throw new IllegalArgumentException("Item quantity cannot be negative.");
             }
 
-            if (dto.price() == null
-                    || dto.price().compareTo(BigDecimal.ZERO) < 0 || dto.price().precision() > 10 || dto.price().scale() > 2) {
+            if (dto.price() == null || dto.price().compareTo(BigDecimal.ZERO) < 0 || dto.price().precision() > 10 || dto.price().scale() > 2) {
                 throw new IllegalArgumentException("Every item must have a valid price.");
+            }
+
+            if (dto.lowStockThreshold() == null || dto.lowStockThreshold() < 0) {
+                throw new IllegalArgumentException("Low stock threshold cannot be negative or null.");
             }
 
             if (dto.sku() != null && dto.sku().trim().length() > 50) {
@@ -364,6 +369,7 @@ public class ItemService {
         item.setSku(dto.sku() == null || dto.sku().isBlank() ? null : dto.sku().trim());
         item.setName(dto.name().trim());
         item.setQuantity(dto.quantity());
+        item.setLowStockThreshold(dto.lowStockThreshold());
         item.setLocation(dto.location().trim());
         item.setDescription(dto.description().trim());
         item.setPrice(dto.price());
