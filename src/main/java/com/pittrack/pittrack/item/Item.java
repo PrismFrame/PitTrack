@@ -8,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
@@ -70,6 +71,9 @@ public class Item {
     @DecimalMin(value = "0.00", message = "Price cannot be negative")
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal price;
+
+    @Min(value = 0, message = "Threshold cannot be negative")
+    private Integer lowStockThreshold = 5;
 
 
     @ManyToMany(fetch = FetchType.LAZY)
@@ -211,5 +215,13 @@ public class Item {
 
     public void setSharedWithAll(boolean sharedWithAll) {
         this.sharedWithAll = sharedWithAll;
+    }
+
+    public Integer getLowStockThreshold() {
+        return lowStockThreshold;
+    }
+
+    public void setLowStockThreshold(Integer lowStockThreshold) {
+        this.lowStockThreshold = lowStockThreshold;
     }
 }

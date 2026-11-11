@@ -22,10 +22,7 @@
                         class="backup-button"
                         id="backupButton"
                         aria-expanded="false">
-
-                        <span>⇅</span>
-                        Import / Export
-                        <span>▾</span>
+                        ⇅ Import / Export ▾
                     </button>
 
                     <div class="backup-menu" id="backupMenu" hidden>
@@ -85,6 +82,11 @@
                 <input type="number" id="quantity" th:field="*{quantity}" min="0" required>
                 <span th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}" class="field-error"></span>
                 <br>
+
+                <label for="lowStockThreshold">Low Stock Alert Threshold</label>
+                <input type="number" id="lowStockThreshold" th:field="*{lowStockThreshold}" min="0" required>
+                <span th:if="${#fields.hasErrors('lowStockThreshold')}" th:errors="*{lowStockThreshold}" class="field-error">
+                </span>
 
                 <label for="sku">SKU:</label>
                 <input type="text" id="sku" th:field="*{sku}" required>
@@ -165,7 +167,7 @@
             </p>
 
             <ul class="inventory-list" th:unless="${#lists.isEmpty(items)}">
-                <li th:each="item : ${items}" th:attr="data-stock=${item.quantity == 0 ? 'out-of-stock' : (item.quantity < 5 ? 'low-stock' : 'in-stock')}">
+                <li th:each="item : ${items}" th:attr="data-stock=${item.quantity == 0 ? 'out-of-stock' : (item.quantity < item.lowStockThreshold ? 'low-stock' : 'in-stock')}">
                     <div class="item-details">
                         <strong th:text="${item.name}">Item Name</strong>
 
@@ -201,11 +203,11 @@
                         Out of Stock
                     </span>
 
-                    <span th:if="${item.quantity > 0 and item.quantity < 5}" class="stock-low">
+                    <span th:if="${item.quantity > 0 and item.quantity < item.lowStockThreshold}" class="stock-low">
                         Low Stock - Restock Alert
                     </span>
 
-                    <span th:if="${item.quantity >= 5}" class="stock-in">
+                    <span th:if="${item.quantity >= item.lowStockThreshold}" class="stock-in">
                         In Stock
                     </span>
 
@@ -316,46 +318,77 @@
         const backupButton = document.getElementById('backupButton');
         const backupMenu = document.getElementById('backupMenu');
 
-        backupButton.addEventListener('click', () => {
-            const isOpening = backupMenu.hidden;
-
-            backupMenu.hidden = !isOpening;
-            backupButton.setAttribute('aria-expanded', String(isOpening)
-            );
-        });
-
-        // Import dialog
+        // Import dialog elements
         const importDialog = document.getElementById('importDialog');
         const openImportButton = document.getElementById('openImportDialog');
         const closeImportButton = document.getElementById('closeImportDialog');
-        openImportButton.addEventListener('click', () => {
-            backupMenu.hidden = true;
-            backupButton.setAttribute('aria-expanded', 'false');
-            importDialog.hidden = false;
-        });
+        const importForm = document.getElementById('importForm');
 
-        closeImportButton.addEventListener('click', () => {
-            importDialog.hidden = true;
-        });
+        // Check that all elements exist
+        console.log("Backup button:", backupButton);
+        console.log("Backup menu:", backupMenu);
+        console.log("Open import button:", openImportButton);
+        console.log("Import dialog:", importDialog);
+        console.log("Close import button:", closeImportButton);
+        console.log("Import form:", importForm);
 
-        // Close when clicking outside the dialog
-        importDialog.addEventListener('click', (event) => {
-            if (event.target === importDialog) {
+        // Dropdown functionality
+        if (backupButton && backupMenu) {
+            backupButton.addEventListener('click', () => {
+                const isOpening = backupMenu.hidden;
+
+                backupMenu.hidden = !isOpening;
+                backupButton.setAttribute('aria-expanded', String(isOpening));
+            });
+        }
+
+        // Open import dialog
+        if (openImportButton && importDialog) {
+            openImportButton.addEventListener('click', () => {
+                backupMenu.hidden = true;
+                backupButton.setAttribute('aria-expanded', 'false');
+                importDialog.hidden = false;
+            });
+        }
+
+        // Close import dialog
+        function closeDialog() {
+            if (importDialog) {
                 importDialog.hidden = true;
             }
-        });
+        }
+
+        if (closeImportButton) {
+            closeImportButton.addEventListener('click', closeDialog);
+        }
+
+        // Close when clicking outside
+        if (importDialog) {
+            importDialog.addEventListener('click', (event) => {
+                if (event.target === importDialog) {
+                    closeDialog();
+                }
+            });
+        }
 
         // Close with Escape
         document.addEventListener('keydown', (event) => {
             if (event.key === 'Escape') {
-                importDialog.hidden = true;
-                backupMenu.hidden = true;
-                backupButton.setAttribute('aria-expanded', 'false');
+                closeDialog();
+
+                if (backupMenu) {
+                    backupMenu.hidden = true;
+                }
+
+                if (backupButton) {
+                    backupButton.setAttribute('aria-expanded', 'false');
+                }
             }
         });
 
         // Confirm import
-        document.getElementById('importForm').addEventListener('submit', (event) => {
+        if (importForm) {
+            importForm.addEventListener('submit', (event) => {
                 const mode = document.getElementById('importMode').value;
 
                 if (mode === 'replace') {
@@ -367,8 +400,8 @@
                         event.preventDefault();
                     }
                 }
-            }
-        );
+            });
+        }
     </script>
 </body>
 </html>

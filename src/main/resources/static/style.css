@@ -76,7 +76,7 @@ body {
 /* 3. Header and branding */
 header {
     position: relative;
-    overflow: hidden;
+    overflow: visible;
 
     padding: 34px 24px 30px;
 
@@ -1371,10 +1371,6 @@ header .inventory-title p {
     gap: 12px;
 }
 
-.backup-dropdown {
-    position: relative;
-}
-
 .backup-button {
     display: inline-flex;
     align-items: center;
@@ -1399,55 +1395,87 @@ header .inventory-title p {
     color: #111827;
 }
 
+
+/* Import / Export dropdown */
+.backup-dropdown {
+    position: relative;
+    display: inline-block;
+    overflow: visible;
+    z-index: 10001;
+}
+
 .backup-menu {
     position: absolute;
     top: calc(100% + 8px);
     left: 0;
 
-    min-width: 210px;
+    width: 230px;
+    padding: 5px 0;
 
-    background: var(--surface-raised);
-
-    border: 1px solid var(--border);
+    background: #162238;
+    border: 1px solid var(--accent);
     border-radius: 9px;
 
-    box-shadow: var(--shadow);
+    box-shadow: 0 8px 28px rgb(0 0 0 / 40%);
 
-    z-index: 100;
+    z-index: 10002;
     overflow: hidden;
 }
 
 .backup-menu[hidden] {
-    display: none;
+    display: none !important;
 }
 
+/* Make both options identical */
 .backup-menu a,
 .backup-menu button {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
     width: 100%;
+    height: 46px;
+    min-height: 46px;
 
     margin: 0;
-    padding: 13px 16px;
+    padding: 0 16px;
 
     background: transparent;
-    color: var(--text);
+    color: #f1f5f9;
 
     border: none;
     border-radius: 0;
 
+    font-family: inherit;
+    font-size: 0.9rem;
+    font-weight: 600;
+
     text-align: left;
     text-decoration: none;
 
-    font-size: 0.9rem;
-    font-weight: 600;
+    cursor: pointer;
+    box-shadow: none;
+    transform: none;
 }
 
+/* Hover effect */
 .backup-menu a:hover,
 .backup-menu button:hover {
-    background: var(--navy-light);
+    background: #0b1120;
     color: var(--accent);
     box-shadow: none;
 }
+
+/* Remove global button hover movement */
+.backup-menu button:active {
+    transform: none;
+}
+
+/* Remove unnecessary top margin */
+.backup-menu button {
+    margin-top: 0;
+}
+
 
 /* Import dialog */
 .import-dialog {
