@@ -9,10 +9,38 @@
 <body>
     <header>
         <div class="inventory-header">
-            <a th:href="@{/dashboard}" class="back-dashboard-button">
-                <span class="back-arrow">←</span>
-                Dashboard
-            </a>
+
+            <div class="header-left-controls">
+                <a th:href="@{/dashboard}" class="back-dashboard-button">
+                    <span class="back-arrow">←</span>
+                    Dashboard
+                </a>
+
+                <div class="backup-dropdown">
+                    <button
+                        type="button"
+                        class="backup-button"
+                        id="backupButton"
+                        aria-expanded="false">
+
+                        <span>⇅</span>
+                        Import / Export
+                        <span>▾</span>
+                    </button>
+
+                    <div class="backup-menu" id="backupMenu" hidden>
+                        <a th:href="@{/items/export}">
+                            ↓ Export Inventory
+                        </a>
+
+                        <button
+                            type="button"
+                            id="openImportDialog">
+                            ↑ Import Inventory
+                        </button>
+                    </div>
+                </div>
+            </div>
 
             <div class="inventory-title">
                 <h1>
@@ -22,7 +50,6 @@
                     </span>
                     PitTrack Inventory
                 </h1>
-
                 <p>View and manage your inventory items.</p>
             </div>
 
@@ -200,6 +227,54 @@
         </section>
     </main>
 
+    <div class="import-dialog" id="importDialog" hidden>
+        <div class="import-dialog-content">
+
+            <button
+                type="button"
+                class="close-dialog"
+                id="closeImportDialog">
+                ×
+            </button>
+
+            <h2>Import Inventory</h2>
+            <p>
+                Select a JSON backup file to restore your inventory.
+            </p>
+
+            <form
+                id="importForm"
+                th:action="@{/items/import}"
+                method="post"
+                enctype="multipart/form-data">
+
+                <label for="importFile">
+                    Select backup file:
+                </label>
+
+                <input
+                    type="file"
+                    id="importFile"
+                    name="file"
+                    accept=".json"
+                    required>
+
+                <label for="importMode">
+                    Import behavior:
+                </label>
+
+                <select id="importMode" name="mode">
+                    <option value="merge">Merge with existing inventory</option>
+                    <option value="replace">Replace existing inventory</option>
+                </select>
+
+                <button type="submit" class="update-button">
+                    Import Inventory
+                </button>
+            </form>
+        </div>
+    </div>
+
     <script>
         const searchInput = document.getElementById('inventorySearch');
         const stockFilter = document.getElementById('stockFilter');
@@ -235,6 +310,65 @@
 
         searchInput.addEventListener('input', filterInventory);
         stockFilter.addEventListener('change', filterInventory);
+
+
+        // Import / Export dropdown
+        const backupButton = document.getElementById('backupButton');
+        const backupMenu = document.getElementById('backupMenu');
+
+        backupButton.addEventListener('click', () => {
+            const isOpening = backupMenu.hidden;
+
+            backupMenu.hidden = !isOpening;
+            backupButton.setAttribute('aria-expanded', String(isOpening)
+            );
+        });
+
+        // Import dialog
+        const importDialog = document.getElementById('importDialog');
+        const openImportButton = document.getElementById('openImportDialog');
+        const closeImportButton = document.getElementById('closeImportDialog');
+        openImportButton.addEventListener('click', () => {
+            backupMenu.hidden = true;
+            backupButton.setAttribute('aria-expanded', 'false');
+            importDialog.hidden = false;
+        });
+
+        closeImportButton.addEventListener('click', () => {
+            importDialog.hidden = true;
+        });
+
+        // Close when clicking outside the dialog
+        importDialog.addEventListener('click', (event) => {
+            if (event.target === importDialog) {
+                importDialog.hidden = true;
+            }
+        });
+
+        // Close with Escape
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                importDialog.hidden = true;
+                backupMenu.hidden = true;
+                backupButton.setAttribute('aria-expanded', 'false');
+            }
+        });
+
+        // Confirm import
+        document.getElementById('importForm').addEventListener('submit', (event) => {
+                const mode = document.getElementById('importMode').value;
+
+                if (mode === 'replace') {
+                    if (!confirm('WARNING: This will replace your entire team inventory. Continue?')) {
+                        event.preventDefault();
+                    }
+                } else {
+                    if (!confirm('Import inventory? Existing SKUs will be skipped.')) {
+                        event.preventDefault();
+                    }
+                }
+            }
+        );
     </script>
 </body>
 </html>
