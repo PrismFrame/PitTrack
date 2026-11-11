@@ -42,6 +42,12 @@
                 <span th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}" style="color: red;"></span>
                 <br>
 
+                <label for="lowStockThreshold">Low Stock Alert Threshold</label>
+                <input type="number" id="lowStockThreshold"
+                    th:field="*{lowStockThreshold}" min="0" required>
+                <span th:if="${#fields.hasErrors('lowStockThreshold')}" th:errors="*{lowStockThreshold}" style="color: red;"></span>
+                <br>
+
                 <label for="sku">SKU:</label>
                 <input type="text" id="sku" th:field="*{sku}" required>
                 <span th:if="${#fields.hasErrors('sku')}" th:errors="*{sku}" style="color: red;"></span>
