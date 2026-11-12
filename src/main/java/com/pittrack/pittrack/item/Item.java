@@ -72,9 +72,10 @@ public class Item {
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal price;
 
+    @NotNull(message = "Low stock threshold is required")
     @Min(value = 0, message = "Threshold cannot be negative")
+    @Column(nullable = false)
     private Integer lowStockThreshold = 5;
-
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(

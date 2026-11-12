@@ -51,6 +51,13 @@
             </div>
 
             <div class="account-controls">
+                <button
+                    type="button"
+                    class="add-item-header-button"
+                    id="openAddItem">
+                    + Add Item
+                </button>
+
                 <form th:action="@{/logout}" method="post">
                     <button type="submit" class="logout-button">
                         Logout
@@ -61,90 +68,6 @@
     </header>
 
     <main>
-        <section>
-            <h2>Add New Item</h2>
-            <form th:action="@{/items}" th:object="${item}" method="post">
-                <p th:if="${#fields.hasErrors()}" class="form-error">
-                    Please correct the errors below.
-                </p>
-
-                <label for="name">Name:</label>
-                <input type="text" id="name" th:field="*{name}" required>
-                <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="field-error"></span>
-                <br>
-
-                <label for="description">Description:</label>
-                <input type="text" id="description" th:field="*{description}" required>
-                <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="field-error"></span>
-                <br>
-
-                <label for="quantity">Quantity:</label>
-                <input type="number" id="quantity" th:field="*{quantity}" min="0" required>
-                <span th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}" class="field-error"></span>
-                <br>
-
-                <label for="lowStockThreshold">Low Stock Alert Threshold</label>
-                <input type="number" id="lowStockThreshold" th:field="*{lowStockThreshold}" min="0" required>
-                <span th:if="${#fields.hasErrors('lowStockThreshold')}" th:errors="*{lowStockThreshold}" class="field-error">
-                </span>
-
-                <label for="sku">SKU:</label>
-                <input type="text" id="sku" th:field="*{sku}" required>
-                <span th:if="${#fields.hasErrors('sku')}" th:errors="*{sku}" class="field-error"></span>
-                <br>
-
-                <label for="price">Price:</label>
-                <input type="number" id="price" th:field="*{price}" step="0.01" min="0" required>
-                <span th:if="${#fields.hasErrors('price')}" th:errors="*{price}" class="field-error"></span>
-                <br>
-
-                <label for="location">Location:</label>
-                <input type="text" id="location" th:field="*{location}" required>
-                <span th:if="${#fields.hasErrors('location')}" th:errors="*{location}" class="field-error"></span>
-                <br>
-
-                <div class="subteam-assignment">
-                    <h3>Equipment Access</h3>
-
-                    <label class="shared-option">
-                        <input
-                            type="checkbox"
-                            name="sharedWithAll"
-                            value="true"
-                            checked
-                        >
-                        Shared with all subteams
-                    </label>
-
-                    <p class="form-help">
-                        Uncheck this option to assign equipment to specific subteams.
-                    </p>
-
-                    <div class="subteam-options">
-                        <label th:each="subteam : ${subteams}">
-                            <input
-                                type="checkbox"
-                                name="subteamIds"
-                                th:value="${subteam.id}"
-                            >
-
-                            <span th:text="${subteam.name}"></span>
-                        </label>
-                    </div>
-
-                    <p th:if="${#lists.isEmpty(subteams)}"
-                    class="form-help">
-                        No subteams created yet.
-                        <a th:href="@{/subteams}">Create a subteam</a>
-                    </p>
-
-                </div>
-
-
-                <button type="submit" class="update-button">Add Item</button>
-            </form>
-        </section>
-
         <section>
             <h2>Inventory Items</h2>
             <div class="inventory-controls">
@@ -277,6 +200,91 @@
         </div>
     </div>
 
+    <!-- Add Item Slide-Out Panel -->
+    <div class="add-item-overlay" id="addItemOverlay" hidden>
+        <div class="add-item-panel">
+            <div class="add-item-panel-header">
+                <div>
+                    <h2>Add New Item</h2>
+                    <p>Enter the details for your new inventory item.</p>
+                </div>
+
+                <button
+                    type="button"
+                    class="close-add-item"
+                    id="closeAddItem"
+                    aria-label="Close">
+                    &times;
+                </button>
+            </div>
+
+            <form th:action="@{/items}"
+                th:object="${item}"
+                method="post">
+                <p th:if="${#fields.hasErrors()}" class="form-error">
+                    Please correct the errors below.
+                </p>
+
+                <label for="addName">Name:</label>
+                <input type="text" id="addName" th:field="*{name}" required>
+
+                <label for="addDescription">Description:</label>
+                <input type="text" id="addDescription"
+                    th:field="*{description}" required>
+
+                <label for="addQuantity">Quantity:</label>
+                <input type="number" id="addQuantity"
+                    th:field="*{quantity}" min="0" required>
+
+                <label for="addThreshold">Low Stock Alert Threshold:</label>
+                <input type="number" id="addThreshold"
+                    th:field="*{lowStockThreshold}"
+                    min="0" required>
+
+                <label for="addSku">SKU:</label>
+                <input type="text" id="addSku" th:field="*{sku}" required>
+
+                <label for="addPrice">Price ($):</label>
+                <input type="number" id="addPrice"
+                    th:field="*{price}"
+                    min="0" step="0.01" required>
+
+                <label for="addLocation">Location:</label>
+                <input type="text" id="addLocation"
+                    th:field="*{location}" required>
+
+                <div class="subteam-assignment">
+                    <h3>Equipment Access</h3>
+
+                    <label class="shared-option">
+                        <input type="checkbox"
+                            name="sharedWithAll"
+                            value="true"
+                            checked>
+                        Shared with all subteams
+                    </label>
+                    <p class="form-help">
+                        Uncheck this option to assign equipment
+                        to specific subteams.
+                    </p>
+
+                    <div class="subteam-options">
+                        <label th:each="subteam : ${subteams}">
+                            <input type="checkbox"
+                                name="subteamIds"
+                                th:value="${subteam.id}">
+                            <span th:text="${subteam.name}"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <button type="submit" class="update-button">
+                    Add Item
+                </button>
+            </form>
+        </div>
+    </div>
+
     <script>
         const searchInput = document.getElementById('inventorySearch');
         const stockFilter = document.getElementById('stockFilter');
@@ -402,6 +410,37 @@
                 }
             });
         }
+        
+        // Add Item slide-out panel
+        const openAddItem = document.getElementById('openAddItem');
+        const closeAddItem = document.getElementById('closeAddItem');
+        const addItemOverlay = document.getElementById('addItemOverlay');
+
+        function showAddItem() {
+            addItemOverlay.hidden = false;
+            document.body.style.overflow = 'hidden';
+        }
+
+        function hideAddItem() {
+            addItemOverlay.hidden = true;
+            document.body.style.overflow = '';
+        }
+
+        openAddItem.addEventListener('click', showAddItem);
+
+        closeAddItem.addEventListener('click', hideAddItem);
+
+        addItemOverlay.addEventListener('click', (event) => {
+            if (event.target === addItemOverlay) {
+                hideAddItem();
+            }
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                hideAddItem();
+            }
+        });
     </script>
 </body>
 </html>
