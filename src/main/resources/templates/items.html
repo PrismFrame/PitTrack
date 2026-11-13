@@ -27,8 +27,11 @@
 
                     <div class="backup-menu" id="backupMenu" hidden>
                         <a th:href="@{/items/export}">
-                            ↓ Export Inventory
+                            ↓ Export Inventory as JSON (.json)
                         </a>
+                        <a th:href="@{/items/export/excel}">
+                            ↓ Export as Excel (.xlsx)
+                        </a>"
 
                         <button
                             type="button"
@@ -164,7 +167,7 @@
 
             <h2>Import Inventory</h2>
             <p>
-                Select a JSON backup file to restore your inventory.
+                Select a JSON or Excel backup file to restore your inventory.
             </p>
 
             <form
@@ -181,7 +184,7 @@
                     type="file"
                     id="importFile"
                     name="file"
-                    accept=".json"
+                    accept=".json,.xlsx,.xls"
                     required>
 
                 <label for="importMode">
@@ -288,9 +291,7 @@
     <script>
         const searchInput = document.getElementById('inventorySearch');
         const stockFilter = document.getElementById('stockFilter');
-        const inventoryItems = document.querySelectorAll(
-            '.inventory-list li'
-        );
+        const inventoryItems = document.querySelectorAll('.inventory-list li');
         const noMatchingItems = document.getElementById('noMatchingItems');
 
         function filterInventory() {
@@ -299,13 +300,8 @@
             let visibleCount = 0;
 
             inventoryItems.forEach(item => {
-                const matchesSearch =
-                    item.textContent.toLowerCase().includes(searchTerm);
-
-                const matchesStock =
-                    selectedStock === 'all' ||
-                    item.dataset.stock === selectedStock;
-
+                const matchesSearch = item.textContent.toLowerCase().includes(searchTerm);
+                const matchesStock = selectedStock === 'all' || item.dataset.stock === selectedStock;
                 const isVisible = matchesSearch && matchesStock;
 
                 item.style.display = isVisible ? 'flex' : 'none';
@@ -427,7 +423,6 @@
         }
 
         openAddItem.addEventListener('click', showAddItem);
-
         closeAddItem.addEventListener('click', hideAddItem);
 
         addItemOverlay.addEventListener('click', (event) => {
